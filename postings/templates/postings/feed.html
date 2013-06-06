@@ -1,0 +1,9 @@
+<h1>Hinsdale</h1>
+
+<a href="{% url "create" %}">Create posting</a>
+
+<ul>
+  {% for posting in object_list %}
+    <li>{{ posting }}</li>
+  {% endfor %}
+</ul>
