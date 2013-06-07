@@ -1,0 +1,9 @@
+<h1>Delete posting</h1>
+
+<p>{{ posting }}</p>
+
+<form action="{% url "delete" pk=posting.id %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Delete" />
+  <a href="{% url "feed" %}">cancel</a>
+</form>

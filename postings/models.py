@@ -1,4 +1,6 @@
+from django import forms
 from django.db import models
+from django.core.urlresolvers import reverse
 
 class Posting(models.Model):
 
@@ -38,6 +40,10 @@ class Posting(models.Model):
     def __unicode__(self):
 
         return self.title
+
+    def get_absolute_url(self):
+
+        return reverse('detail', kwargs={'pk': self.id})
 
 class Comment(models.Model):
 

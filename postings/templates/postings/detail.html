@@ -1,0 +1,11 @@
+<h1>{{ posting }}</h1>
+
+<p>{{ posting.message }}</p>
+
+<ul>
+  <li>{{ posting.user }}</li>
+  <li>{{ posting.posted }}</li>
+  <li>{{ posting.get_variety_display }}</li>
+</ul>
+
+<a href="{% url "delete" pk=posting.id %}">delete</a>
