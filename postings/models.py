@@ -1,5 +1,5 @@
-from django import forms
 from django.db import models
+from django.forms import ModelForm, Textarea
 from django.core.urlresolvers import reverse
 
 class Posting(models.Model):
@@ -68,3 +68,12 @@ class Comment(models.Model):
     def __unicode__(self):
 
         return self.message[:139]
+
+class PostingForm(ModelForm):
+
+    class Meta:
+
+        model = Posting
+        widgets = {
+            'message': Textarea(attrs={'cols': 80, 'rows': 15}),
+        }

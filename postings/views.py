@@ -1,7 +1,7 @@
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse
 
-from postings.models import Posting
+from postings.models import Posting, PostingForm
 
 class Feed(ListView):
 
@@ -11,6 +11,7 @@ class Feed(ListView):
 class Create(CreateView):
 
     model = Posting
+    form_class = PostingForm
     template_name = 'postings/create.html'
 
     def get_success_url(self):
