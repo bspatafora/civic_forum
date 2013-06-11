@@ -5,12 +5,10 @@ from django.core.urlresolvers import reverse
 class Posting(models.Model):
 
     varieties = (
-        ('pi', 'proposal/idea'),
-        ('ci', 'concern/issue'),
-        ('vt', 'volunteering'),
-        ('pt', 'politics'),
-        ('at', 'alert'),
-        ('cf', 'community forum '),
+        ('al', 'alert'),
+        ('co', 'community'),
+        ('go', 'governance'),
+        ('po', 'politics'),
     )
 
     title = models.CharField(
@@ -75,5 +73,6 @@ class PostingForm(ModelForm):
 
         model = Posting
         widgets = {
-            'message': Textarea(attrs={'cols': 80, 'rows': 15}),
+            'title': Textarea(attrs={'cols': 75, 'rows': 5}),
+            'message': Textarea(attrs={'cols': 75, 'rows': 15}),
         }
