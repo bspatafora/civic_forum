@@ -21,7 +21,7 @@ class Posting(models.Model):
         max_length=50,
     )
     posted = models.DateTimeField(
-        auto_now=True,
+        auto_now_add=True,
     )
     points = models.IntegerField(
         default=0,
@@ -53,7 +53,7 @@ class Comment(models.Model):
         max_length=50,
     )
     posted = models.DateTimeField(
-        auto_now=True,
+        auto_now_add=True,
     )
     points = models.IntegerField(
         default=0,

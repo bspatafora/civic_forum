@@ -8,4 +8,17 @@
   <li>{{ posting.get_variety_display }}</li>
 </ul>
 
+<h2>Comments</h2>
+
+{% for comment in posting.comment_set.all %}
+
+  <p>{{ comment.message|linebreaks }}</p>
+
+  <ul>
+  	<li>{{ comment.user }}</li>
+  	<li>{{ comment.posted }}</li>
+  </ul>
+
+{% endfor %}
+
 <a href="{% url "delete" pk=posting.id %}">delete</a>
