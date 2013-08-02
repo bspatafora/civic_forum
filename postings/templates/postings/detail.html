@@ -10,10 +10,9 @@
 
 <h2>Comments</h2>
 
-
 {% load mptt_tags %}
-{% full_tree_for_model postings.Comment as comments %}
-<ul>
+{% with posting.comment_set.all as comments %}
+<ul class="root">
     {% recursetree comments %}
         <li>
             {{ node.message }}
@@ -25,5 +24,6 @@
         </li>
     {% endrecursetree %}
 </ul>
+{% endwith %}
 
 <a href="{% url "delete" pk=posting.id %}">delete</a>

@@ -70,7 +70,7 @@ class Comment(MPTTModel):
 
     def __unicode__(self):
 
-        return self.message[:139]
+        return self.message[:49]
 
 
 class PostingForm(ModelForm):
