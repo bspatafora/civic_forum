@@ -2,6 +2,9 @@ from django.db import models
 from django.forms import ModelForm, Textarea
 from django.core.urlresolvers import reverse
 
+from mptt.models import MPTTModel, TreeForeignKey
+
+
 class Posting(models.Model):
 
     varieties = (
@@ -43,9 +46,11 @@ class Posting(models.Model):
 
         return reverse('detail', kwargs={'pk': self.id})
 
-class Comment(models.Model):
+
+class Comment(MPTTModel):
 
     posting = models.ForeignKey(Posting)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     message = models.CharField(
         max_length=10000,
     )
@@ -59,13 +64,14 @@ class Comment(models.Model):
         default=0,
     )
 
-    class Meta:
+    class MPTTMeta:
 
-        ordering = ['-points']
+        order_insertion_by = ['points']
 
     def __unicode__(self):
 
         return self.message[:139]
+
 
 class PostingForm(ModelForm):
 

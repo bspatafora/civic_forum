@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'south',
     'postings',
+    'mptt',
 )
 
 # A sample logging configuration. The only tangible logging

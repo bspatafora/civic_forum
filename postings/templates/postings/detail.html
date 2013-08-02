@@ -10,15 +10,20 @@
 
 <h2>Comments</h2>
 
-{% for comment in posting.comment_set.all %}
 
-  <p>{{ comment.message|linebreaks }}</p>
-
-  <ul>
-  	<li>{{ comment.user }}</li>
-  	<li>{{ comment.posted }}</li>
-  </ul>
-
-{% endfor %}
+{% load mptt_tags %}
+{% full_tree_for_model postings.Comment as comments %}
+<ul>
+    {% recursetree comments %}
+        <li>
+            {{ node.message }}
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
 
 <a href="{% url "delete" pk=posting.id %}">delete</a>
