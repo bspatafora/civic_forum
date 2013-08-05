@@ -8,6 +8,8 @@
   <li>{{ posting.get_variety_display }}</li>
 </ul>
 
+<a href="{% url "delete" pk=posting.id %}">delete</a>
+
 <h2>Comments</h2>
 
 {% load mptt_tags %}
@@ -15,7 +17,7 @@
 <ul class="root">
     {% recursetree comments %}
         <li>
-            {{ node.message }}
+            {{ node.message|linebreaks }}
             {% if not node.is_leaf_node %}
                 <ul class="children">
                     {{ children }}
@@ -25,5 +27,3 @@
     {% endrecursetree %}
 </ul>
 {% endwith %}
-
-<a href="{% url "delete" pk=posting.id %}">delete</a>

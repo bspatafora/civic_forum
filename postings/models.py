@@ -82,3 +82,16 @@ class PostingForm(ModelForm):
             'title': Textarea(attrs={'cols': 75, 'rows': 5}),
             'message': Textarea(attrs={'cols': 75, 'rows': 15}),
         }
+
+class CommentForm(ModelForm):
+
+    class Meta:
+
+        model = Comment
+        widgets = {
+            'message': Textarea(attrs={'cols': 75, 'rows': 15}),
+        }
+
+    def save(self, *args, **kwargs):
+        Comment.objects.rebuild()
+        return super(CommentForm, self).save(*args, **kwargs)
