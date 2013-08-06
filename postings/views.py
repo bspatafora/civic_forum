@@ -8,14 +8,11 @@ class Feed(ListView):
     model = Posting
     template_name = 'postings/feed.html'
 
-class Create(CreateView):
+class CreatePosting(CreateView):
 
     model = Posting
     form_class = PostingForm
-    template_name = 'postings/create.html'
-
-    def get_success_url(self):
-        return reverse('feed')
+    template_name = 'postings/create_posting.html'
 
 class Detail(DetailView):
 
