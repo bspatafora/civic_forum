@@ -3,14 +3,22 @@
 <p>{{ posting.message|linebreaks }}</p>
 
 <ul>
-  <li>{{ posting.user }}</li>
-  <li>{{ posting.posted }}</li>
-  <li>{{ posting.get_variety_display }}</li>
+	<li>{{ posting.user }}</li>
+	<li>{{ posting.posted }}</li>
+	<li>{{ posting.get_variety_display }}</li>
 </ul>
 
 <a href="{% url "delete" pk=posting.id %}">delete</a>
 
 <h2>Comments</h2>
+
+<form action="{% url "create_comment" %}" method="POST">
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+	</ul>
+	<input type="submit" value="Post" />
+</form>
 
 {% load mptt_tags %}
 {% with posting.comment_set.all as comments %}
@@ -18,6 +26,16 @@
     {% recursetree comments %}
         <li>
             {{ node.message|linebreaks }}
+			<form action="{% url "create_comment" %}" method="POST">
+				{% csrf_token %}
+				<ul>
+					{{ form.as_ul }}
+				</ul>
+				{% if node.id %}    
+					<input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" />
+				{% endif %}
+				<input type="submit" value="Post" />
+			</form>
             {% if not node.is_leaf_node %}
                 <ul class="children">
                     {{ children }}

@@ -1,7 +1,7 @@
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse
 
-from postings.models import Posting, PostingForm
+from postings.models import Posting, Comment, PostingForm, CommentForm
 
 class Feed(ListView):
 
@@ -19,6 +19,11 @@ class Detail(DetailView):
     model = Posting
     template_name = 'postings/detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(Detail, self).get_context_data(**kwargs)
+        context['form'] = CommentForm(initial={'posting': self.object})
+        return context
+
 class Delete(DeleteView):
 
     model = Posting
@@ -26,3 +31,9 @@ class Delete(DeleteView):
 
     def get_success_url(self):
         return reverse('feed')
+
+class CreateComment(CreateView):
+
+    model = Comment
+    form_class = CommentForm
+    template_name = 'postings/create_comment.html'

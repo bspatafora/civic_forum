@@ -3,12 +3,12 @@
 <a href="{% url "create_posting" %}">Create posting</a>
 
 <ul>
-  {% for posting in object_list %}
-    <li><a href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
-    <ul>
-      <li>{{ posting.user }}</li>
-      <li>{{ posting.posted }}</li>
-      <li>{{ posting.get_variety_display }}</li>
-    </ul>
-  {% endfor %}
+	{% for posting in object_list %}
+		<li><a href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
+		<ul>
+			<li>{{ posting.user }}</li>
+			<li>{{ posting.posted }}</li>
+			<li>{{ posting.get_variety_display }}</li>
+		</ul>
+	{% endfor %}
 </ul>

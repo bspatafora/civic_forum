@@ -11,4 +11,6 @@ urlpatterns = patterns('',
         name='detail',),
     url(r'^delete/(?P<pk>\d+)$', views.Delete.as_view(),
         name='delete',),
+    url(r'^create_comment$', views.CreateComment.as_view(),
+        name='create_comment',),
 )

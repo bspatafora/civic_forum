@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm, Textarea
+from django.forms import ModelForm, Textarea, HiddenInput
 from django.core.urlresolvers import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
@@ -72,6 +72,10 @@ class Comment(MPTTModel):
 
         return self.message[:49]
 
+    def get_absolute_url(self):
+
+        return reverse('detail', kwargs={'pk': self.posting.id})
+
 
 class PostingForm(ModelForm):
 
@@ -90,8 +94,11 @@ class CommentForm(ModelForm):
         model = Comment
         widgets = {
             'message': Textarea(attrs={'cols': 75, 'rows': 15}),
+            'posting': HiddenInput,
+            'parent': HiddenInput,
         }
 
     def save(self, *args, **kwargs):
+        self.parent = self.cleaned_data['parent']
         Comment.objects.rebuild()
         return super(CommentForm, self).save(*args, **kwargs)
