@@ -5,5 +5,5 @@
 <form action="{% url "delete_comment" pk=comment.id %}" method="POST">
 	{% csrf_token %}
 	<input type="submit" value="Delete" />
-	<a href="{% url "feed" %}">cancel</a>
+	<a href="{% url "detail" pk=comment.posting.id %}">cancel</a>
 </form>

@@ -48,4 +48,4 @@ class DeleteComment(DeleteView):
     template_name = 'postings/delete_comment.html'
 
     def get_success_url(self):
-        return reverse('feed')
+        return reverse('detail', kwargs={'pk': self.object.posting.id})
