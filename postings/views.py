@@ -14,6 +14,8 @@ class CreatePosting(CreateView):
     form_class = PostingForm
     template_name = 'postings/create_posting.html'
 
+    # get_success_url: Django tries "url = self.object.get_absolute_url()" automatically
+
 class Detail(DetailView):
 
     model = Posting
@@ -24,10 +26,10 @@ class Detail(DetailView):
         context['form'] = CommentForm(initial={'posting': self.object})
         return context
 
-class Delete(DeleteView):
+class DeletePosting(DeleteView):
 
     model = Posting
-    template_name = 'postings/delete.html'
+    template_name = 'postings/delete_posting.html'
 
     def get_success_url(self):
         return reverse('feed')
@@ -37,3 +39,13 @@ class CreateComment(CreateView):
     model = Comment
     form_class = CommentForm
     template_name = 'postings/create_comment.html'
+
+    # get_success_url: Django tries "url = self.object.get_absolute_url()" automatically
+
+class DeleteComment(DeleteView):
+
+    model = Comment
+    template_name = 'postings/delete_comment.html'
+
+    def get_success_url(self):
+        return reverse('feed')

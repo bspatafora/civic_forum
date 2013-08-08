@@ -8,7 +8,7 @@
 	<li>{{ posting.get_variety_display }}</li>
 </ul>
 
-<a href="{% url "delete" pk=posting.id %}">delete</a>
+<a href="{% url "delete_posting" pk=posting.id %}">delete</a>
 
 <h2>Comments</h2>
 
@@ -26,13 +26,14 @@
     {% recursetree comments %}
         <li>
             {{ node.message|linebreaks }}
+            <a href="{% url "delete_comment" pk=node.id %}">delete</a>
 			<form action="{% url "create_comment" %}" method="POST">
 				{% csrf_token %}
 				<ul>
 					{{ form.as_ul }}
 				</ul>
 				{% if node.id %}    
-					<input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" />
+					<input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" /> {# Used by CommentForm to set "parent" field #}
 				{% endif %}
 				<input type="submit" value="Post" />
 			</form>

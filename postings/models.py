@@ -66,7 +66,7 @@ class Comment(MPTTModel):
 
     class MPTTMeta:
 
-        order_insertion_by = ['points']
+        order_insertion_by = ['-points']
 
     def __unicode__(self):
 
@@ -99,6 +99,6 @@ class CommentForm(ModelForm):
         }
 
     def save(self, *args, **kwargs):
-        self.parent = self.cleaned_data['parent']
-        Comment.objects.rebuild()
+        self.parent = self.cleaned_data['parent'] # Parent ID from hidden field in template
+        Comment.objects.rebuild() # Change this to partial rebuild!
         return super(CommentForm, self).save(*args, **kwargs)

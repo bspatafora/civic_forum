@@ -6,6 +6,8 @@ from postings.models import Posting, Comment, PostingForm, CommentForm
 class CommentInline(admin.TabularInline):
     model = Comment
     form = CommentForm
+    fields = ('message', 'user', 'points')
+    extra = 0
 
 
 class PostingAdmin(admin.ModelAdmin):
