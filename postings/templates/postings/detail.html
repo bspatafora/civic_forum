@@ -1,14 +1,12 @@
-<h1>{{ posting }}</h1>
-
-<p>{{ posting.message|linebreaks }}</p>
+<h1>{{ posting }} ({{ posting.get_variety_display }})</h1>
 
 <ul>
-	<li>{{ posting.user }}</li>
-	<li>{{ posting.posted }}</li>
-	<li>{{ posting.get_variety_display }}</li>
+	<li>{{ posting.message|linebreaks }}</li>
+	<ul>
+		<li>Posted by {{ posting.user }} {{ posting.posted|timesince }} ago</li>
+		<li><a href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
+	</ul>
 </ul>
-
-<a href="{% url "delete_posting" pk=posting.id %}">delete</a>
 
 <h2>Comments</h2>
 
@@ -26,7 +24,10 @@
     {% recursetree comments %}
         <li>
             {{ node.message|linebreaks }}
-            <a href="{% url "delete_comment" pk=node.id %}">delete</a>
+            <ul>
+            	<li>Posted by {{ node.user }} {{ node.posted|timesince }} ago</li>
+            	<li><a href="{% url "delete_comment" pk=node.id %}">delete</a></li>
+            </ul>
 			<form action="{% url "create_comment" %}" method="POST">
 				{% csrf_token %}
 				<ul>

@@ -1,6 +1,7 @@
 from django.db import models
 from django.forms import ModelForm, Textarea, HiddenInput
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -20,9 +21,7 @@ class Posting(models.Model):
     message = models.CharField(
         max_length=10000,
     )
-    user = models.CharField(
-        max_length=50,
-    )
+    user = models.ForeignKey(User)
     posted = models.DateTimeField(
         auto_now_add=True,
     )
@@ -54,9 +53,7 @@ class Comment(MPTTModel):
     message = models.CharField(
         max_length=10000,
     )
-    user = models.CharField(
-        max_length=50,
-    )
+    user = models.ForeignKey(User)
     posted = models.DateTimeField(
         auto_now_add=True,
     )
@@ -86,6 +83,8 @@ class PostingForm(ModelForm):
             'title': Textarea(attrs={'cols': 75, 'rows': 5}),
             'message': Textarea(attrs={'cols': 75, 'rows': 15}),
         }
+        exclude = ['user']
+
 
 class CommentForm(ModelForm):
 

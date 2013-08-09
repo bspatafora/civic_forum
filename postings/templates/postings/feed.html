@@ -5,11 +5,9 @@
 
 <ul>
 	{% for posting in object_list %}
-		<li><a href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
+		<li><a href="{{ posting.get_absolute_url }}">{{ posting }}</a> ({{ posting.get_variety_display }})</li>
 		<ul>
-			<li>{{ posting.user }}</li>
-			<li>{{ posting.posted }}</li>
-			<li>{{ posting.get_variety_display }}</li>
+			<li>Posted by {{ posting.user }} {{ posting.posted|timesince }} ago</li>
 		</ul>
 	{% endfor %}
 </ul>

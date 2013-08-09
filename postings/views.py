@@ -1,5 +1,6 @@
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 
 from postings.models import Posting, Comment, PostingForm, CommentForm
 
@@ -14,7 +15,11 @@ class CreatePosting(CreateView):
     form_class = PostingForm
     template_name = 'postings/create_posting.html'
 
-    # get_success_url: Django tries "url = self.object.get_absolute_url()" automatically
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user # Set "user" field to logged-in user
+        instance.save()
+        return HttpResponseRedirect(reverse('detail', kwargs={'pk': instance.id}))
 
 class Detail(DetailView):
 
