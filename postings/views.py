@@ -11,7 +11,6 @@ class Feed(ListView):
 
 class CreatePosting(CreateView):
 
-    model = Posting
     form_class = PostingForm
     template_name = 'postings/create_posting.html'
 
@@ -45,7 +44,11 @@ class CreateComment(CreateView):
     form_class = CommentForm
     template_name = 'postings/create_comment.html'
 
-    # get_success_url: Django tries "url = self.object.get_absolute_url()" automatically
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.user = self.request.user # Set "user" field to logged-in user
+        instance.save()
+        return HttpResponseRedirect(reverse('detail', kwargs={'pk': instance.posting.id}))
 
 class DeleteComment(DeleteView):
 

@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.forms import ModelForm, Textarea
-from postings.models import Posting, Comment, PostingForm, CommentForm
+from postings.models import Posting, Comment, PostingForm, AdminCommentForm
 
 
 class CommentInline(admin.TabularInline):
     model = Comment
-    form = CommentForm
-    fields = ('message', 'user', 'points')
+    form = AdminCommentForm
+    fields = ('parent', 'message', 'user', 'points')
     extra = 0
 
 
