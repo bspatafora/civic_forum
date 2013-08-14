@@ -1,13 +1,14 @@
-<h1>Hinsdale</h1>
+{% extends "postings/base.html" %}
 
-<a href="{% url "create_posting" %}">Create posting</a>
-<a href="{% url "logout" %}">Log out</a>
+{% block content %}
+
+<h1>Village of Hinsdale</h1>
 
 <ul>
 	{% for posting in object_list %}
-		<li><a href="{{ posting.get_absolute_url }}">{{ posting }}</a> ({{ posting.get_variety_display }})</li>
-		<ul>
-			<li>Posted by {{ posting.user }} {{ posting.posted|timesince }} ago</li>
-		</ul>
+		<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
+		<li class="feed-byline">posted to <span class="italic">{{ posting.get_variety_display }}</span> {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
 	{% endfor %}
 </ul>
+
+{% endblock %}

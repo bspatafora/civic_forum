@@ -102,18 +102,3 @@ class CommentForm(ModelForm):
         self.parent = self.cleaned_data['parent'] # Parent ID from hidden field in template
         Comment.objects.rebuild() # Change this to partial rebuild!
         return super(CommentForm, self).save(*args, **kwargs)
-
-
-class AdminCommentForm(ModelForm):
-
-    class Meta:
-
-        model = Comment
-        widgets = {
-            'message': Textarea(attrs={'cols': 75, 'rows': 15}),
-            'posting': HiddenInput,
-        }
-
-    def save(self, *args, **kwargs):
-        Comment.objects.rebuild() # Change this to partial rebuild!
-        return super(AdminCommentForm, self).save(*args, **kwargs)

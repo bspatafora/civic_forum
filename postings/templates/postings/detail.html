@@ -1,14 +1,16 @@
-<h1>{{ posting }} ({{ posting.get_variety_display }})</h1>
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+<h2>{{ posting }}</h2>
 
 <ul>
 	<li>{{ posting.message|linebreaks }}</li>
-	<ul>
-		<li>Posted by {{ posting.user }} {{ posting.posted|timesince }} ago</li>
-		<li><a href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
-	</ul>
+	<li class="detail-byline">posted to <span class="italic">{{ posting.get_variety_display }}</span> {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
+	<li class="delete"><a href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
 </ul>
 
-<h2>Comments</h2>
+<h3>Comments</h3>
 
 <form action="{% url "create_comment" %}" method="POST">
 	{% csrf_token %}
@@ -19,14 +21,14 @@
 </form>
 
 {% load mptt_tags %}
-{% with posting.comment_set.all as comments %}
+{% with comments=posting.comment_set.all %}
 <ul class="root">
     {% recursetree comments %}
         <li>
-            {{ node.message|linebreaks }}
             <ul>
-            	<li>Posted by {{ node.user }} {{ node.posted|timesince }} ago</li>
-            	<li><a href="{% url "delete_comment" pk=node.id %}">delete</a></li>
+            	{{ node.message|linebreaks }}
+            	<li class="detail-byline">posted {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
+            	<li class="delete"><a href="{% url "delete_comment" pk=node.id %}">delete</a></li>
             </ul>
 			<form action="{% url "create_comment" %}" method="POST">
 				{% csrf_token %}
@@ -47,3 +49,5 @@
     {% endrecursetree %}
 </ul>
 {% endwith %}
+
+{% endblock %}
