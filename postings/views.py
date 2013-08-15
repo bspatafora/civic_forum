@@ -16,7 +16,7 @@ class CreatePosting(CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.user = self.request.user # Set "user" field to logged-in user
+        instance.user = self.request.user # Set "user" field
         instance.save()
         return HttpResponseRedirect(reverse('detail', kwargs={'pk': instance.id}))
 
@@ -27,7 +27,7 @@ class Detail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(Detail, self).get_context_data(**kwargs)
-        context['form'] = CommentForm(initial={'posting': self.object})
+        context['form'] = CommentForm(initial={'posting': self.object}) # Set "posting" field
         return context
 
 class DeletePosting(DeleteView):
@@ -46,7 +46,7 @@ class CreateComment(CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.user = self.request.user # Set "user" field to logged-in user
+        instance.user = self.request.user # Set "user" field
         instance.save()
         return HttpResponseRedirect(reverse('detail', kwargs={'pk': instance.posting.id}))
 

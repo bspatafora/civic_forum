@@ -7,7 +7,7 @@
 <ul>
 	<li>{{ posting.message|linebreaks }}</li>
 	<li class="detail-byline">posted to <span class="italic">{{ posting.get_variety_display }}</span> {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
-	<li class="delete"><a href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
+	<li class="reply-delete"><a class="action" href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
 </ul>
 
 <h3>Comments</h3>
@@ -15,7 +15,8 @@
 <form action="{% url "create_comment" %}" method="POST">
 	{% csrf_token %}
 	<ul>
-		{{ form.as_ul }}
+		{{ form.message }}
+		{{ form.posting }}
 	</ul>
 	<input type="submit" value="Post" />
 </form>
@@ -24,16 +25,17 @@
 {% with comments=posting.comment_set.all %}
 <ul class="root">
     {% recursetree comments %}
-        <li>
+        <li style="padding-left: {{ node.get_level }}em">
             <ul>
             	{{ node.message|linebreaks }}
-            	<li class="detail-byline">posted {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
-            	<li class="delete"><a href="{% url "delete_comment" pk=node.id %}">delete</a></li>
+            	<li class="detail-byline">posted {{ node.posted|timesince }} ago by {{ node.user.get_full_name }}</li>
+            	<li class="reply-delete"><a id="{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a><a class="action" href="{% url "delete_comment" pk=node.id %}">delete</a></li>
             </ul>
-			<form action="{% url "create_comment" %}" method="POST">
+			<form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_comment" %}" method="POST">
 				{% csrf_token %}
 				<ul>
-					{{ form.as_ul }}
+					{{ form.message }}
+					{{ form.posting }}
 				</ul>
 				{% if node.id %}    
 					<input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" /> {# Used by CommentForm to set "parent" field #}

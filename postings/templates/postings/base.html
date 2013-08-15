@@ -10,11 +10,13 @@
 <body>
 	<div id="top-bar">
 		<a id="civically" class="civically-link" href="{% url "feed" %}">civically</a>
-		<a class="action civically-link" href="{% url "create_posting" %}">create posting</a>
-		<a class="action civically-link" href="{% url "logout" %}">log out</a>
+		<a class="bar-link civically-link" href="{% url "create_posting" %}">create posting</a>
+		<a class="bar-link civically-link" href="{% url "logout" %}">log out</a>
 	</div>
 	<div id="content">
 		{% block content %}{% endblock %}
 	</div>
+	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+	<script src="{% static 'postings/javascript.js' %}"></script>
 </body>
 </html>

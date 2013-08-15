@@ -96,7 +96,7 @@ class CommentForm(ModelForm):
             'posting': HiddenInput,
             'parent': HiddenInput,
         }
-        exclude = ['user']
+        exclude = ['user', 'points']
 
     def save(self, *args, **kwargs):
         self.parent = self.cleaned_data['parent'] # Parent ID from hidden field in template
