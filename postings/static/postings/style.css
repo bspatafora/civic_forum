@@ -21,9 +21,19 @@ ol, ul {
 
 /* --- */
 
+.login-form {
+	width: 25.5em;
+	margin: 0 auto;
+}
+
+#id_username, #id_password {
+	height: 1.5em;
+	width: 20em;
+}
+
 #top-bar {
 	width: 45em;
-	margin: 1em auto 0.85em auto;
+	margin: 0.85em auto;
 }
 
 #civically {
@@ -72,12 +82,18 @@ a {
 	border-bottom: 1px dotted;
 }
 
-textarea {
+textarea, input {
+	margin-bottom: 0.75em;
+	padding: 0.5em;
 	color: #222;
 	font-size: 1.2em;
 	font-family: 'Libre Baskerville';
 	font-weight: 400;
 	line-height: 1.5;
+}
+
+#id_variety {
+	margin-bottom: 0.75em;
 }
 
 #content {
