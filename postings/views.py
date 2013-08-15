@@ -8,6 +8,7 @@ class Feed(ListView):
 
     model = Posting
     template_name = 'postings/feed.html'
+    paginate_by = 25
 
 class CreatePosting(CreateView):
 

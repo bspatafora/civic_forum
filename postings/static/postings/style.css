@@ -22,13 +22,13 @@ ol, ul {
 /* --- */
 
 .login-form {
-	width: 25.5em;
+	width: 19.5em;
 	margin: 0 auto;
 }
 
 #id_username, #id_password {
 	height: 1.5em;
-	width: 20em;
+	width: 15em;
 }
 
 #top-bar {
@@ -96,14 +96,22 @@ textarea, input {
 	margin-bottom: 0.75em;
 }
 
+.detail-textarea {
+	margin-bottom: -0.5em;
+}
+
 #content {
 	width: 45em;
 	margin: 0 auto;
 }
 
 #variety-bar {
-	width: 25em;
+	width: 29em;
 	margin: 0 auto 1em auto;
+}
+
+.variety-box {
+	margin-left: 1em;
 }
 
 .civically-link {
@@ -127,6 +135,11 @@ textarea, input {
 	font-size: 1.05em;
 	text-align: right;
 	color: #7B7B7B;
+}
+
+#next {
+	float: right;
+	margin-bottom: 2em;
 }
 
 .italic {
