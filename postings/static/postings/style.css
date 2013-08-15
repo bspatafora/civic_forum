@@ -53,9 +53,15 @@ ol, ul {
 	color: #222 !important;
 }
 
+#feed-image {
+	display: block;
+	width: 15em;
+	margin: 0.75em auto 0.5em auto;
+}
+
 h1 {
-	margin-bottom: 0.5em;
-	font-size: 4em;
+	margin-bottom: 0.25em;
+	font-size: 3em;
 	text-align: center;
 }
 
@@ -118,6 +124,10 @@ textarea, input {
 	color: #222;
 	text-decoration: none;
 	border-bottom: none;
+}
+
+.civically-link:hover {
+	border-bottom: 1px dotted;
 }
 
 .civically-link:visited {
