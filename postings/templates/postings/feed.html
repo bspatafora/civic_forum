@@ -4,10 +4,19 @@
 
 <h1>Village of Hinsdale</h1>
 
+<form id="variety-bar">
+	<input id="alert-box" type="checkbox" checked>alert
+	<input id="community-box" type="checkbox" checked>community
+	<input id="governance-box" type="checkbox" checked>governance
+	<input id="politics-box" type="checkbox" checked>politics
+</form>
+
 <ul>
 	{% for posting in object_list %}
-		<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
-		<li class="feed-byline">posted to <span class="italic">{{ posting.get_variety_display }}</span> {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
+		<div class="feed-{{ posting.get_variety_display }}">
+			<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
+			<li class="feed-byline">posted to <span class="italic">{{ posting.get_variety_display }}</span> {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
+		</div>
 	{% endfor %}
 </ul>
 

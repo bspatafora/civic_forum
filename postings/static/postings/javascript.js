@@ -12,4 +12,36 @@ $(document).ready(function() {
 		$("#comment-" + button).hide();
 	});
 
+	$("#alert-box").click(function() {
+		if($(this).is(":checked")) { 
+			$(".feed-alert").slideDown(350);
+		} else {
+			$(".feed-alert").slideUp(350);
+		}
+	});
+
+	$("#community-box").click(function() {
+		if($(this).is(":checked")) { 
+			$(".feed-community").slideDown(350);
+		} else {
+			$(".feed-community").slideUp(350);
+		}
+	});
+
+	$("#governance-box").click(function() {
+		if($(this).is(":checked")) { 
+			$(".feed-governance").slideDown(350);
+		} else {
+			$(".feed-governance").slideUp(350);
+		}
+	});
+
+	$("#politics-box").click(function() {
+		if($(this).is(":checked")) { 
+			$(".feed-politics").slideDown(350);
+		} else {
+			$(".feed-politics").slideUp(350);
+		}
+	});
+
 });
