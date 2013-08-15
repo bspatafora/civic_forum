@@ -1,4 +1,8 @@
-<h1>Delete posting</h1>
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+<h1>Delete posting?</h1>
 
 <p>{{ posting }}</p>
 
@@ -7,3 +11,5 @@
 	<input type="submit" value="Delete" />
 	<a href="{% url "detail" pk=posting.id %}">cancel</a>
 </form>
+
+{% endblock %}

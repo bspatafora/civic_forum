@@ -83,7 +83,7 @@ class PostingForm(ModelForm):
             'title': Textarea(attrs={'cols': 75, 'rows': 5}),
             'message': Textarea(attrs={'cols': 75, 'rows': 15}),
         }
-        exclude = ['user']
+        fields = ('variety', 'title', 'message')
 
 
 class CommentForm(ModelForm):
@@ -96,7 +96,7 @@ class CommentForm(ModelForm):
             'posting': HiddenInput,
             'parent': HiddenInput,
         }
-        exclude = ['user', 'points']
+        fields = ('message', 'posting', 'parent')
 
     def save(self, *args, **kwargs):
         self.parent = self.cleaned_data['parent'] # Parent ID from hidden field in template

@@ -1,3 +1,7 @@
+{% extends "postings/base.html" %}
+
+{% block content %}
+
 <h1>New posting</h1>
 
 <form action="{% url "create_posting" %}" method="POST">
@@ -6,6 +10,7 @@
 		{{ form.as_ul }}
 	</ul>
 	<input type="submit" value="Post" />
+	<a href="{% url "feed" %}">cancel</a>
 </form>
 
-<a href="{% url "feed" %}">cancel</a>
+{% endblock %}

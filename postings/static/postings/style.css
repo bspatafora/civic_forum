@@ -72,6 +72,14 @@ a {
 	border-bottom: 1px dotted;
 }
 
+textarea {
+	color: #222;
+	font-size: 1.2em;
+	font-family: 'Libre Baskerville';
+	font-weight: 400;
+	line-height: 1.5;
+}
+
 #content {
 	width: 45em;
 	margin: 0 auto;
@@ -122,6 +130,12 @@ a {
 	font-size: 1.05em;
 }
 
+#id_title {
+	height: 3.5em;
+	width: 100%;
+}
+
 #id_message {
+	height: 10em;
 	width: 100%;
 }
