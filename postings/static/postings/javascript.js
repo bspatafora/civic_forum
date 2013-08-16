@@ -12,14 +12,6 @@ $(document).ready(function() {
 		$("#comment-" + button).hide();
 	});
 
-	$("#alert-box").click(function() {
-		if($(this).is(":checked")) { 
-			$(".feed-alert").slideDown(350);
-		} else {
-			$(".feed-alert").slideUp(350);
-		}
-	});
-
 	$("#community-box").click(function() {
 		if($(this).is(":checked")) { 
 			$(".feed-community").slideDown(350);

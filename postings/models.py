@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm, Textarea, HiddenInput
+from django.forms import ModelForm, Textarea, HiddenInput, RadioSelect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
@@ -9,7 +9,6 @@ from mptt.models import MPTTModel, TreeForeignKey
 class Posting(models.Model):
 
     varieties = (
-        ('al', 'alert'),
         ('co', 'community'),
         ('go', 'governance'),
         ('po', 'politics'),
@@ -31,6 +30,8 @@ class Posting(models.Model):
     variety = models.CharField(
         max_length=2,
         choices=varieties,
+        blank=False,
+        default='community'
     )
 
     class Meta:
@@ -82,8 +83,9 @@ class PostingForm(ModelForm):
         widgets = {
             'title': Textarea(attrs={'cols': 75, 'rows': 5}),
             'message': Textarea(attrs={'cols': 75, 'rows': 15}),
+            'variety': RadioSelect,
         }
-        fields = ('variety', 'title', 'message')
+        fields = ('title', 'message', 'variety')
 
 
 class CommentForm(ModelForm):
