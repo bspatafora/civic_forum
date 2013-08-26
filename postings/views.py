@@ -1,16 +1,24 @@
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from postings.models import Posting, Comment, PostingForm, CommentForm
 
-class Feed(ListView):
+
+class LoginRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+class Feed(LoginRequiredMixin, ListView):
 
     model = Posting
     template_name = 'postings/feed.html'
     paginate_by = 25
 
-class CreatePosting(CreateView):
+class CreatePosting(LoginRequiredMixin, CreateView):
 
     form_class = PostingForm
     template_name = 'postings/create_posting.html'
@@ -21,7 +29,7 @@ class CreatePosting(CreateView):
         instance.save()
         return HttpResponseRedirect(reverse('detail', kwargs={'pk': instance.id}))
 
-class Detail(DetailView):
+class Detail(LoginRequiredMixin, DetailView):
 
     model = Posting
     template_name = 'postings/detail.html'
@@ -31,7 +39,7 @@ class Detail(DetailView):
         context['form'] = CommentForm(initial={'posting': self.object}) # Set "posting" field
         return context
 
-class DeletePosting(DeleteView):
+class DeletePosting(LoginRequiredMixin, DeleteView):
 
     model = Posting
     template_name = 'postings/delete_posting.html'
@@ -39,7 +47,7 @@ class DeletePosting(DeleteView):
     def get_success_url(self):
         return reverse('feed')
 
-class CreateComment(CreateView):
+class CreateComment(LoginRequiredMixin, CreateView):
 
     model = Comment
     form_class = CommentForm
@@ -51,7 +59,7 @@ class CreateComment(CreateView):
         instance.save()
         return HttpResponseRedirect(reverse('detail', kwargs={'pk': instance.posting.id}))
 
-class DeleteComment(DeleteView):
+class DeleteComment(LoginRequiredMixin, DeleteView):
 
     model = Comment
     template_name = 'postings/delete_comment.html'

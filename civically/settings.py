@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'south',
     'mptt',
     'postings',
+    'guardian',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -159,3 +160,10 @@ LOGGING = {
 }
 
 LOGIN_REDIRECT_URL = 'feed'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+ANONYMOUS_USER_ID = -1 # Required by django-guardian
