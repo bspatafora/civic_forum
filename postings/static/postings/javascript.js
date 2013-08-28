@@ -14,25 +14,41 @@ $(document).ready(function() {
 
 	$("#community-box").click(function() {
 		if($(this).is(":checked")) { 
-			$(".feed-community").slideDown(350);
+			$(".feed-co").slideDown(350);
 		} else {
-			$(".feed-community").slideUp(350);
+			$(".feed-co").slideUp(350);
 		}
 	});
 
-	$("#governance-box").click(function() {
+	$("#government-box").click(function() {
 		if($(this).is(":checked")) { 
-			$(".feed-governance").slideDown(350);
+			$(".feed-go").slideDown(350);
 		} else {
-			$(".feed-governance").slideUp(350);
+			$(".feed-go").slideUp(350);
 		}
 	});
 
 	$("#politics-box").click(function() {
 		if($(this).is(":checked")) { 
-			$(".feed-politics").slideDown(350);
+			$(".feed-po").slideDown(350);
 		} else {
-			$(".feed-politics").slideUp(350);
+			$(".feed-po").slideUp(350);
+		}
+	});
+
+	$("#forum-box").click(function() {
+		if($(this).is(":checked")) { 
+			$(".feed-fo").slideDown(350);
+		} else {
+			$(".feed-fo").slideUp(350);
+		}
+	});
+
+	$("#volunteering-box").click(function() {
+		if($(this).is(":checked")) { 
+			$(".feed-vo").slideDown(350);
+		} else {
+			$(".feed-vo").slideUp(350);
 		}
 	});
 

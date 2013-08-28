@@ -9,13 +9,15 @@
 
 <form id="variety-bar">
 	<input id="community-box" class="variety-box" type="checkbox" checked>community
-	<input id="governance-box" class="variety-box" type="checkbox" checked>governance
+	<input id="government-box" class="variety-box" type="checkbox" checked>local government
 	<input id="politics-box" class="variety-box" type="checkbox" checked>politics
+	<input id="forum-box" class="variety-box" type="checkbox" checked>open forum
+	<input id="volunteering-box" class="variety-box" type="checkbox" checked>volunteering
 </form>
 
 <ul>
 	{% for posting in object_list %}
-		<div class="feed-{{ posting.get_variety_display }}">
+		<div class="feed-{{ posting.variety }}">
 			<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
 			<li class="feed-byline">posted to <span class="italic">{{ posting.get_variety_display }}</span> {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
 		</div>

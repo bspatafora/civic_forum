@@ -10,8 +10,10 @@ class Posting(models.Model):
 
     varieties = (
         ('co', 'community'),
-        ('go', 'governance'),
+        ('go', 'local government'),
         ('po', 'politics'),
+        ('fo', 'open forum'),
+        ('vo', 'volunteering'),
     )
 
     title = models.CharField(
