@@ -15,7 +15,7 @@ class Posting(models.Model):
         ('go', 'local government'),
         ('po', 'politics'),
         ('fo', 'open forum'),
-        ('vo', 'volunteeringo'),
+        ('vo', 'volunteering'),
     )
 
     title = models.CharField(
@@ -83,6 +83,12 @@ class Comment(MPTTModel):
     def get_absolute_url(self):
 
         return reverse('detail', kwargs={'pk': self.posting.id})
+
+    def save(self, *args, **kwargs):
+
+        super(Comment, self).save(*args, **kwargs)
+        assign_perm('postings.delete_comment', self.user, self)
+        return
 
 
 class PostingForm(ModelForm):

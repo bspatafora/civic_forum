@@ -72,3 +72,7 @@ class DeleteComment(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('detail', kwargs={'pk': self.object.posting.id})
+
+    @method_decorator(permission_required_or_403('postings.delete_comment', (Comment, 'pk', 'pk')))
+    def dispatch(self, request, *args, **kwargs):
+        return super(DeleteComment, self).dispatch(request, *args, **kwargs)

@@ -36,7 +36,10 @@
             	<li class="detail-byline">posted {{ node.posted|timesince }} ago by {{ node.user.get_full_name }}</li>
             	<li class="reply-delete">
             		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
-            		<a class="action" href="{% url "delete_comment" pk=node.id %}">delete</a>
+            		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
+            		{% if "delete_comment" in comment_perms %}
+            			<a class="action" href="{% url "delete_comment" pk=node.id %}">delete</a>
+            		{% endif %}
             	</li>
             </ul>
 			<form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_comment" %}" method="POST">
