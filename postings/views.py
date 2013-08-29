@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+from guardian.decorators import permission_required_or_403
+
 from postings.models import Posting, Comment, PostingForm, CommentForm
 
 
@@ -46,6 +48,10 @@ class DeletePosting(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('feed')
+
+    @method_decorator(permission_required_or_403('postings.delete_posting', (Posting, 'pk', 'pk')))
+    def dispatch(self, request, *args, **kwargs):
+        return super(DeletePosting, self).dispatch(request, *args, **kwargs)
 
 class CreateComment(LoginRequiredMixin, CreateView):
 

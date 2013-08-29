@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 from mptt.models import MPTTModel, TreeForeignKey
 
+from guardian.shortcuts import assign_perm
+
 
 class Posting(models.Model):
 
@@ -13,7 +15,7 @@ class Posting(models.Model):
         ('go', 'local government'),
         ('po', 'politics'),
         ('fo', 'open forum'),
-        ('vo', 'volunteering'),
+        ('vo', 'volunteeringo'),
     )
 
     title = models.CharField(
@@ -47,6 +49,12 @@ class Posting(models.Model):
     def get_absolute_url(self):
 
         return reverse('detail', kwargs={'pk': self.id})
+
+    def save(self, *args, **kwargs):
+
+        super(Posting, self).save(*args, **kwargs)
+        assign_perm('postings.delete_posting', self.user, self)
+        return
 
 
 class Comment(MPTTModel):

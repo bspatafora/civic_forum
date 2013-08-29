@@ -166,4 +166,6 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
 )
 
+GUARDIAN_RENDER_403 = True
+
 ANONYMOUS_USER_ID = -1 # Required by django-guardian
