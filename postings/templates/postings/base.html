@@ -11,6 +11,9 @@
 	<div id="top-bar">
 		<a id="civically" class="civically-link" href="{% url "feed" %}">civically</a>
 		<a class="bar-link civically-link" href="{% url "create_posting" %}">create posting</a>
+		{% if perms.postings.create_alert %}
+			<a class="bar-link civically-link" href="{% url "create_alert" %}">create alert</a>
+		{% endif %}
 		<a class="bar-link civically-link" href="{% url "logout" %}">log out</a>
 	</div>
 	<div id="content">

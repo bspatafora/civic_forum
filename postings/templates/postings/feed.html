@@ -16,6 +16,15 @@
 </form>
 
 <ul>
+	{% for alert in alerts %}
+		<div>
+			<li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
+			<li class="feed-byline">posted {{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+		</div>
+	{% endfor %}
+</ul>
+
+<ul>
 	{% for posting in object_list %}
 		<div class="feed-{{ posting.variety }}">
 			<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>

@@ -1,0 +1,67 @@
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+{% load guardian_tags %}
+
+<h2>{{ alert }}</h2>
+
+<ul>
+	<li>{{ alert.message|linebreaks }}</li>
+	<li class="detail-byline">posted {{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+	{% get_obj_perms user for alert as "alert_perms" %} {# django-guardian #}
+	{% if "delete_alert" in alert_perms %}
+		<li class="reply-delete"><a class="action" href="{% url "delete_alert" pk=alert.id %}">delete</a></li>
+	{% endif %}
+</ul>
+
+<h3>Comments</h3>
+
+<form action="{% url "create_alert_comment" %}" method="POST">
+	{% csrf_token %}
+	<ul class="detail-textarea">
+		{{ form.message }}
+		{{ form.alert }}
+	</ul>
+	<input type="submit" value="Post" />
+</form>
+
+{% load mptt_tags %}
+{% with comments=alert.alertcomment_set.all %}
+<ul class="root">
+    {% recursetree comments %}
+        <li style="padding-left: {{ node.get_level }}em">
+            <ul>
+            	{{ node.message|linebreaks }}
+            	<li class="detail-byline">posted {{ node.posted|timesince }} ago by {{ node.user.get_full_name }}</li>
+            	<li class="reply-delete">
+            		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
+            		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
+            		{% if "delete_alertcomment" in comment_perms %}
+            			<a class="action" href="{% url "delete_alert_comment" pk=node.id %}">delete</a>
+            		{% endif %}
+            	</li>
+            </ul>
+			<form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_alert_comment" %}" method="POST">
+				{% csrf_token %}
+				<ul class="detail-textarea">
+					{{ form.message }}
+					{{ form.alert }} {# To allow for redirect #}
+				</ul>
+				{% if node.id %}    
+					<input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" /> {# Used by CommentForm to set "parent" field #}
+				{% endif %}
+				<input type="submit" value="Post" />
+				<a id="cancel-{{ node.id }}" class="action cancel-button" href="#" onclick="return false;">cancel</a>
+			</form>
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+{% endwith %}
+
+{% endblock %}
