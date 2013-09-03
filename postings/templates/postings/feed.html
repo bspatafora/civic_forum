@@ -19,7 +19,11 @@
 	{% for alert in alerts %}
 		<div>
 			<li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
-			<li class="feed-byline">posted {{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+			{% if alert.posted|timesince != alert.updated|timesince %}
+				<li class="feed-byline">updated {{ alert.updated|timesince }} ago by {{ alert.user.get_full_name }}</li>
+			{% else %}
+				<li class="feed-byline">posted {{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+			{% endif %}
 		</div>
 	{% endfor %}
 </ul>

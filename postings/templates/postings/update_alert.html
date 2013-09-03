@@ -1,0 +1,16 @@
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+<h2>Update alert</h2>
+
+<form action="{% url "update_alert" pk=alert.id %}" method="POST">
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+	</ul>
+	<input type="submit" value="Update" />
+	<a class="cancel-button" href="{% url "feed" %}">cancel</a>
+</form>
+
+{% endblock %}

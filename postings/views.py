@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, DetailView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
@@ -75,6 +75,17 @@ class Detail(LoginRequiredMixin, DetailView):
         context = super(Detail, self).get_context_data(**kwargs)
         context['form'] = CommentForm(initial={'posting': self.object}) # Set "posting" field
         return context
+
+
+class UpdateAlert(LoginRequiredMixin, UpdateView):
+
+    model = Alert
+    form_class = AlertForm
+    template_name = 'postings/update_alert.html'
+
+    @method_decorator(permission_required_or_403('postings.change_alert', (Alert, 'pk', 'pk')))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UpdateAlert, self).dispatch(request, *args, **kwargs)
 
 
 class DeleteAlert(LoginRequiredMixin, DeleteView):
