@@ -1,0 +1,29 @@
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+<h1>Alerts</h1>
+
+<ul>
+	{% for alert in object_list %}
+		<div>
+			<li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
+			{% if alert.posted|timesince != alert.updated|timesince %}
+				<li class="feed-alert">alert</li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by {{ alert.user.get_full_name }}</li>
+			{% else %}
+				<li class="feed-alert">alert</li><li class="feed-byline">posted {{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+			{% endif %}
+		</div>
+	{% endfor %}
+</ul>
+
+<div class="pagination">
+	{% if page_obj.has_previous %}
+		<a id="previous" href="?page={{ page_obj.previous_page_number }}">&larr; previous</a>
+	{% endif %}
+	{% if page_obj.has_next %}
+		<a id="next" href="?page={{ page_obj.next_page_number }}">next &rarr;</a>
+	{% endif %}
+</div>
+
+{% endblock %}

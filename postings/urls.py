@@ -6,6 +6,8 @@ from postings import views
 urlpatterns = patterns('',
     url(r'^$', views.Feed.as_view(),
         name='feed',),
+    url(r'^alerts$', views.Alerts.as_view(),
+        name='alerts',),
     url(r'^create_alert$', views.CreateAlert.as_view(),
         name='create_alert',),
     url(r'^create_posting$', views.CreatePosting.as_view(),

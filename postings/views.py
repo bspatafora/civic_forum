@@ -27,6 +27,13 @@ class Feed(LoginRequiredMixin, ListView):
         return context
 
 
+class Alerts(LoginRequiredMixin, ListView):
+
+    model = Alert
+    template_name = 'postings/alerts.html'
+    paginate_by = 25
+
+
 class CreateAlert(LoginRequiredMixin, CreateView):
 
     form_class = AlertForm

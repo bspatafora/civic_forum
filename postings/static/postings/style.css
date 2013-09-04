@@ -109,15 +109,6 @@ textarea, input {
 	margin: 0 auto;
 }
 
-#variety-bar {
-	width: 45em;
-	margin: -1.35em auto 2em auto;
-}
-
-.variety-box {
-	margin-left: 1em;
-}
-
 .civically-link {
 	color: #222;
 	text-decoration: none;
@@ -147,6 +138,7 @@ textarea, input {
 
 .feed-alert {
 	float: left;
+	clear: both;
 	margin-bottom: 3.5em;
 	font-size: 1.05em;
 	font-style: italic;
@@ -163,12 +155,25 @@ textarea, input {
 	color: #222;
 }
 
+#variety-bar {
+	width: 45em;
+	margin: -1.35em auto 2em auto;
+}
+
+.variety-box {
+	margin-left: 1em;
+}
+
 #more-alerts {
 	margin-top: -1.5em;
 	margin-bottom: 3.5em;
 	margin-right: 1.5em;
 	font-size: 1.1em;
 	text-align: right;
+	color: #A13637;
+}
+
+#more-alerts-link {
 	color: #A13637;
 }
 
