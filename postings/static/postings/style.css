@@ -126,7 +126,7 @@ textarea, input {
 .feed-title {
 	margin-bottom: 0.125em;
 	font-size: 1.95em;
-	line-height: 1.25em;
+	line-height: 1.4em;
 }
 
 .feed-byline {
@@ -145,11 +145,17 @@ textarea, input {
 	color: #A13637;
 }
 
-#filter-postings {
+.feed-variety {
 	float: left;
 	clear: both;
-	margin-top: -1.5em;
 	margin-bottom: 3.5em;
+	font-size: 1.05em;
+	font-style: italic;
+	color: #7B7B7B;
+}
+
+#filter-postings {
+	display: inline-block;
 	margin-left: 1.5em;
 	font-size: 1.1em;
 	color: #222;
@@ -194,6 +200,24 @@ textarea, input {
 	margin-bottom: 1.5em;
 	font-size: 1.05em;
 	text-align: right;
+	color: #7B7B7B;
+}
+
+.detail-alert {
+	float: left;
+	clear: both;
+	margin-bottom: 1.5em;
+	font-size: 1.05em;
+	font-style: italic;
+	color: #A13637;
+}
+
+.detail-variety {
+	float: left;
+	clear: both;
+	margin-bottom: 1.5em;
+	font-size: 1.05em;
+	font-style: italic;
 	color: #7B7B7B;
 }
 

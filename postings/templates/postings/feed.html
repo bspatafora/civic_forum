@@ -36,7 +36,7 @@
 	{% for posting in object_list %}
 		<div class="feed-{{ posting.variety }}">
 			<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
-			<li class="feed-byline">posted to <span class="italic">{{ posting.get_variety_display }}</span> {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
+			<li class="feed-variety">{{ posting.get_variety_display }}</li><li class="feed-byline">posted {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
 		</div>
 	{% endfor %}
 </ul>

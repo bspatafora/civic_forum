@@ -8,7 +8,7 @@
 
 <ul>
 	<li>{{ posting.message|linebreaks }}</li>
-	<li class="detail-byline">posted to <span class="italic">{{ posting.get_variety_display }}</span> {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
+	<li class="detail-variety">{{ posting.get_variety_display }}</li><li class="detail-byline">posted {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
 	{% get_obj_perms user for posting as "posting_perms" %} {# django-guardian #}
 	{% if "delete_posting" in posting_perms %}
 		<li class="reply-delete"><a class="action" href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
