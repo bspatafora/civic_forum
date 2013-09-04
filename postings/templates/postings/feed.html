@@ -7,6 +7,23 @@
 
 <h1>Village of Hinsdale</h1>
 
+<ul>
+	{% for alert in alerts %}
+		<div>
+			<li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
+			{% if alert.posted|timesince != alert.updated|timesince %}
+				<li class="feed-alert">alert</li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by {{ alert.user.get_full_name }}</li>
+			{% else %}
+				<li class="feed-alert">alert</li><li class="feed-byline">posted {{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+			{% endif %}
+		</div>
+	{% endfor %}
+</ul>
+
+<ul>
+	<li id="filter-postings"><a id="filter-postings-link" class="civically-link" href="#" onclick="return false;">filter postings &darr;</a></li><li id="more-alerts"><a id="more-alerts-link" class="civically-link" href="{{ feed }}">view more alerts&rarr;</a></li>
+</ul>
+
 <form id="variety-bar">
 	<input id="community-box" class="variety-box" type="checkbox" checked>community
 	<input id="government-box" class="variety-box" type="checkbox" checked>local government
@@ -14,19 +31,6 @@
 	<input id="forum-box" class="variety-box" type="checkbox" checked>open forum
 	<input id="volunteering-box" class="variety-box" type="checkbox" checked>volunteering
 </form>
-
-<ul>
-	{% for alert in alerts %}
-		<div>
-			<li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
-			{% if alert.posted|timesince != alert.updated|timesince %}
-				<li class="feed-byline">updated {{ alert.updated|timesince }} ago by {{ alert.user.get_full_name }}</li>
-			{% else %}
-				<li class="feed-byline">posted {{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
-			{% endif %}
-		</div>
-	{% endfor %}
-</ul>
 
 <ul>
 	{% for posting in object_list %}

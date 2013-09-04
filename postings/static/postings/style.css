@@ -47,7 +47,7 @@ ol, ul {
 }
 
 .bar-link {
-	margin-left: 0.75em;
+	margin-left: 1.25em;
 	font-size: 1.05em;
 }
 
@@ -58,10 +58,11 @@ ol, ul {
 #feed-image {
 	display: block;
 	width: 12em;
-	margin: 0 auto 0.5em auto;
+	margin: 0 auto 1em auto;
 }
 
 h1 {
+	margin-bottom: 0.5em;
 	font-size: 3.5em;
 	text-align: center;
 }
@@ -110,7 +111,7 @@ textarea, input {
 
 #variety-bar {
 	width: 45em;
-	margin: 0 auto 2em auto;
+	margin: -1.35em auto 2em auto;
 }
 
 .variety-box {
@@ -142,6 +143,37 @@ textarea, input {
 	font-size: 1.05em;
 	text-align: right;
 	color: #7B7B7B;
+}
+
+.feed-alert {
+	float: left;
+	margin-bottom: 3.5em;
+	font-size: 1.05em;
+	font-style: italic;
+	color: #A13637;
+}
+
+#filter-postings {
+	float: left;
+	clear: both;
+	margin-top: -1.5em;
+	margin-bottom: 3.5em;
+	margin-left: 1.5em;
+	font-size: 1.1em;
+	color: #222;
+}
+
+#more-alerts {
+	margin-top: -1.5em;
+	margin-bottom: 3.5em;
+	margin-right: 1.5em;
+	font-size: 1.1em;
+	text-align: right;
+	color: #A13637;
+}
+
+#more-alerts-link:visited {
+	color: #A13637 !important;
 }
 
 #next {

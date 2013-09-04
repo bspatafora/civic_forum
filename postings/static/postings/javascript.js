@@ -12,6 +12,12 @@ $(document).ready(function() {
 		$("#comment-" + button).hide();
 	});
 
+	$("#variety-bar").hide();
+
+	$("#filter-postings-link").click(function () {
+		$("#variety-bar").toggle();
+	});
+
 	$("#community-box").click(function() {
 		if($(this).is(":checked")) { 
 			$(".feed-co").slideDown(350);
