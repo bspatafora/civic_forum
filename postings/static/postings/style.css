@@ -221,6 +221,10 @@ textarea, input {
 	color: #7B7B7B;
 }
 
+.children {
+	border-left: 1px dotted #B5B5B5;
+}
+
 .reply-delete {
 	margin-top: -1.25em; /* To bring closer (if present) to detail-byline */
 	margin-bottom: 1.5em;
