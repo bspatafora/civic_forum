@@ -30,7 +30,7 @@
 {% with comments=posting.comment_set.all %}
 <ul class="root">
     {% recursetree comments %}
-        <li {% if node.is_child_node %}style="padding-left: 2em"{% endif %}>
+        <li {% if node.is_child_node %}style="padding-left: 2.25em"{% endif %}>
             <ul>
             	{{ node.message|linebreaks }}
             	<li class="detail-byline">posted {{ node.posted|timesince }} ago by {{ node.user.get_full_name }}</li>

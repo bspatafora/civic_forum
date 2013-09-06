@@ -125,7 +125,7 @@ textarea, input {
 
 .feed-title {
 	margin-bottom: 0.125em;
-	font-size: 1.95em;
+	font-size: 1.75em;
 	line-height: 1.4em;
 }
 
@@ -148,7 +148,7 @@ textarea, input {
 .feed-variety {
 	float: left;
 	clear: both;
-	margin-bottom: 3.5em;
+	margin-bottom: 3.2em;
 	font-size: 1.05em;
 	font-style: italic;
 	color: #7B7B7B;
@@ -159,6 +159,7 @@ textarea, input {
 	margin-left: 1.5em;
 	font-size: 1.1em;
 	color: #222;
+	font-weight: 700;
 }
 
 #variety-bar {
@@ -172,11 +173,12 @@ textarea, input {
 
 #more-alerts {
 	margin-top: -1.5em;
-	margin-bottom: 3.5em;
+	margin-bottom: 3.2em;
 	margin-right: 1.5em;
 	font-size: 1.1em;
 	text-align: right;
 	color: #A13637;
+	font-weight: 700;
 }
 
 #more-alerts-link {
@@ -222,7 +224,7 @@ textarea, input {
 }
 
 .children {
-	border-left: 1px dotted #B5B5B5;
+	border-left: 1px dotted #222;
 }
 
 .reply-delete {
