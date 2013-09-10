@@ -24,13 +24,13 @@
 	<li id="filter-postings"><a id="filter-postings-link" class="civically-link" href="#" onclick="return false;">filter postings &darr;</a></li><li id="more-alerts"><a id="more-alerts-link" class="civically-link" href="{% url "alerts" %}">view more alerts &rarr;</a></li>
 </ul>
 
-<form id="variety-bar">
-	<input id="community-box" class="variety-box" type="checkbox" checked>community
-	<input id="government-box" class="variety-box" type="checkbox" checked>local government
-	<input id="politics-box" class="variety-box" type="checkbox" checked>politics
-	<input id="forum-box" class="variety-box" type="checkbox" checked>open forum
-	<input id="volunteering-box" class="variety-box" type="checkbox" checked>volunteering
-</form>
+	<form id="variety-bar">
+		<input id="community-box" class="variety-box" type="checkbox" checked>community
+		<input id="government-box" class="variety-box" type="checkbox" checked>local government
+		<input id="politics-box" class="variety-box" type="checkbox" checked>politics
+		<input id="forum-box" class="variety-box" type="checkbox" checked>open forum
+		<input id="volunteering-box" class="variety-box" type="checkbox" checked>volunteering
+	</form>
 
 <ul>
 	{% for posting in object_list %}
