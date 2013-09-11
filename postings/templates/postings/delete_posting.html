@@ -9,7 +9,7 @@
 <form action="{% url "delete_posting" pk=posting.id %}" method="POST">
 	{% csrf_token %}
 	<input type="submit" value="Delete" />
-	<a href="{% url "detail" pk=posting.id %}">cancel</a>
+	<a href="{% url "posting_detail" pk=posting.id %}">cancel</a>
 </form>
 
 {% endblock %}

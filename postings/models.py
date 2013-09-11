@@ -82,7 +82,7 @@ class Posting(models.Model):
 
     class Meta:
 
-        ordering = ['-points']
+        ordering = ['-posted']
 
     def __unicode__(self):
 
@@ -90,7 +90,7 @@ class Posting(models.Model):
 
     def get_absolute_url(self):
 
-        return reverse('detail', kwargs={'pk': self.id})
+        return reverse('posting_detail', kwargs={'pk': self.id})
 
     def save(self, *args, **kwargs):
 
@@ -158,7 +158,7 @@ class Comment(MPTTModel):
 
     def get_absolute_url(self):
 
-        return reverse('detail', kwargs={'pk': self.posting.id})
+        return reverse('posting_detail', kwargs={'pk': self.posting.id})
 
     def save(self, *args, **kwargs):
 

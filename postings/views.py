@@ -59,7 +59,7 @@ class CreatePosting(LoginRequiredMixin, CreateView):
         instance = form.save(commit=False)
         instance.user = self.request.user # Set "user" field
         instance.save()
-        return HttpResponseRedirect(reverse('detail', kwargs={'pk': instance.id}))
+        return HttpResponseRedirect(reverse('posting_detail', kwargs={'pk': instance.id}))
 
 
 class AlertDetail(LoginRequiredMixin, DetailView):
@@ -73,13 +73,13 @@ class AlertDetail(LoginRequiredMixin, DetailView):
         return context
 
 
-class Detail(LoginRequiredMixin, DetailView):
+class PostingDetail(LoginRequiredMixin, DetailView):
 
     model = Posting
-    template_name = 'postings/detail.html'
+    template_name = 'postings/posting_detail.html'
 
     def get_context_data(self, **kwargs):
-        context = super(Detail, self).get_context_data(**kwargs)
+        context = super(PostingDetail, self).get_context_data(**kwargs)
         context['form'] = CommentForm(initial={'posting': self.object}) # Set "posting" field
         return context
 
@@ -144,7 +144,7 @@ class CreateComment(LoginRequiredMixin, CreateView):
         instance = form.save(commit=False)
         instance.user = self.request.user # Set "user" field
         instance.save()
-        return HttpResponseRedirect(reverse('detail', kwargs={'pk': instance.posting.id}))
+        return HttpResponseRedirect(reverse('posting_detail', kwargs={'pk': instance.posting.id}))
 
 
 class DeleteAlertComment(LoginRequiredMixin, DeleteView):
@@ -166,7 +166,7 @@ class DeleteComment(LoginRequiredMixin, DeleteView):
     template_name = 'postings/delete_comment.html'
 
     def get_success_url(self):
-        return reverse('detail', kwargs={'pk': self.object.posting.id})
+        return reverse('posting_detail', kwargs={'pk': self.object.posting.id})
 
     @method_decorator(permission_required_or_403('postings.delete_comment', (Comment, 'pk', 'pk')))
     def dispatch(self, request, *args, **kwargs):
