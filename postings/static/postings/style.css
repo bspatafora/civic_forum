@@ -7,6 +7,7 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, p, a, img, center, ul
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	word-wrap: break-word;
 }
 body {
 	line-height: 1.5;
@@ -55,10 +56,26 @@ ol, ul {
 	color: #222 !important;
 }
 
-#feed-image {
-	display: block;
-	width: 12em;
-	margin: 0 auto 1em auto;
+#content {
+	width: 45em;
+	margin: 0 auto;
+}
+
+#feed-image-container {
+	width: 45em;
+	margin-bottom: 2.2em;
+	text-align: justify; /* Automatically space feed images */
+}
+
+.feed-image {
+	display: inline-block;
+	width: 14.25em;
+}
+
+#feed-image-container:after {
+	display: inline-block;
+	width: 100%; /* Ensures at least two lines of text so justification works on images */
+	content: '';
 }
 
 h1 {
@@ -80,8 +97,7 @@ h3 {
 p {
 	font-size: 1.2em;
 	margin: 1em auto;
-	line-height: 1.65;
-	word-wrap: break-word;
+	line-height: 1.75;
 }
 
 a {
@@ -104,11 +120,6 @@ textarea, input {
 	margin-bottom: -0.5em;
 }
 
-#content {
-	width: 45em;
-	margin: 0 auto;
-}
-
 .civically-link {
 	color: #222;
 	text-decoration: none;
@@ -120,7 +131,7 @@ textarea, input {
 }
 
 .civically-link:visited {
-	color: #5E5E5E;
+	color: #777777;
 }
 
 .feed-title {
@@ -133,7 +144,7 @@ textarea, input {
 	margin-bottom: 3.5em;
 	font-size: 1.05em;
 	text-align: right;
-	color: #7B7B7B;
+	color: #777777;
 }
 
 .feed-alert {
@@ -151,12 +162,12 @@ textarea, input {
 	margin-bottom: 3.2em;
 	font-size: 1.05em;
 	font-style: italic;
-	color: #7B7B7B;
+	color: #777777;
 }
 
 #filter-postings {
 	display: inline-block;
-	margin-left: 2.5em;
+	margin-left: 3em;
 	font-size: 1.3em;
 	color: #222;
 }
@@ -173,7 +184,7 @@ textarea, input {
 #more-alerts {
 	margin-top: -1.5em;
 	margin-bottom: 2.5em;
-	margin-right: 2.5em;
+	margin-right: 3em;
 	font-size: 1.3em;
 	text-align: right;
 	color: #B50707;
@@ -200,7 +211,7 @@ textarea, input {
 	margin-bottom: 1.5em;
 	font-size: 1.05em;
 	text-align: right;
-	color: #7B7B7B;
+	color: #777777;
 }
 
 .detail-alert {
@@ -218,11 +229,11 @@ textarea, input {
 	margin-bottom: 1.5em;
 	font-size: 1.05em;
 	font-style: italic;
-	color: #7B7B7B;
+	color: #777777;
 }
 
 .children {
-	border-left: 1px dotted #222;
+	border-left: 1px dotted #777777;
 }
 
 .reply-delete {

@@ -3,9 +3,11 @@
 {% block content %}
 
 {% load staticfiles %}
-<img id="feed-image" src="{% static "postings/images/hinsdale.png" %}" alt="Hinsdale Memorial Hall">
-
-<h1>Village of Hinsdale</h1>
+<div id="feed-image-container">
+	<img class="feed-image" src="{% static "postings/images/fountain.jpg" %}" alt="Fountain">
+	<img class="feed-image" src="{% static "postings/images/memorial_hall.jpg" %}" alt="Memorial Hall">
+	<img class="feed-image" src="{% static "postings/images/train.jpg" %}" alt="Train">
+</div>
 
 <ul>
 	{% for alert in alerts %}
@@ -14,7 +16,7 @@
 			{% if alert.posted|timesince != alert.updated|timesince %}
 				<li class="feed-alert">alert</li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by {{ alert.user.get_full_name }}</li>
 			{% else %}
-				<li class="feed-alert">alert</li><li class="feed-byline">posted {{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+				<li class="feed-alert">alert</li><li class="feed-byline">{{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
 			{% endif %}
 		</div>
 	{% endfor %}
@@ -36,7 +38,7 @@
 	{% for posting in object_list %}
 		<div class="feed-{{ posting.variety }}">
 			<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
-			<li class="feed-variety">{{ posting.get_variety_display }}</li><li class="feed-byline">posted {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
+			<li class="feed-variety">{{ posting.get_variety_display }}</li><li class="feed-byline">{{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
 		</div>
 	{% endfor %}
 </ul>

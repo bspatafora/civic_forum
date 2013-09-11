@@ -8,7 +8,7 @@
 
 <ul>
 	<li>{{ posting.message|linebreaks }}</li>
-	<li class="detail-variety">{{ posting.get_variety_display }}</li><li class="detail-byline">posted {{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
+	<li class="detail-variety">{{ posting.get_variety_display }}</li><li class="detail-byline">{{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
 	{% get_obj_perms user for posting as "posting_perms" %} {# django-guardian #}
 	{% if "delete_posting" in posting_perms %}
 		<li class="reply-delete"><a class="action" href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
@@ -33,7 +33,7 @@
         <li {% if node.is_child_node %}style="padding-left: 2.25em"{% endif %}>
             <ul>
             	{{ node.message|linebreaks }}
-            	<li class="detail-byline">posted {{ node.posted|timesince }} ago by {{ node.user.get_full_name }}</li>
+            	<li class="detail-byline">{{ node.posted|timesince }} ago by {{ node.user.get_full_name }}</li>
             	<li class="reply-delete">
             		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
             		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}

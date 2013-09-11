@@ -11,7 +11,7 @@
 	{% if alert.posted|timesince != alert.updated|timesince %}
 		<li class="detail-alert">alert</li><li class="detail-byline">updated {{ alert.updated|timesince }} ago by {{ alert.user.get_full_name }}</li>
 	{% else %}
-		<li class="detail-alert">alert</li><li class="detail-byline">posted {{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+		<li class="detail-alert">alert</li><li class="detail-byline">{{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
 	{% endif %}
 	{% get_obj_perms user for alert as "alert_perms" %} {# django-guardian #}
 	{% if "delete_alert" in alert_perms %}
@@ -40,7 +40,7 @@
         <li {% if node.is_child_node %}style="padding-left: 2.25em"{% endif %}>
             <ul>
             	{{ node.message|linebreaks }}
-            	<li class="detail-byline">posted {{ node.posted|timesince }} ago by {{ node.user.get_full_name }}</li>
+            	<li class="detail-byline">{{ node.posted|timesince }} ago by {{ node.user.get_full_name }}</li>
             	<li class="reply-delete">
             		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
             		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}

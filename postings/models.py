@@ -116,7 +116,7 @@ class AlertComment(MPTTModel):
 
     class MPTTMeta:
 
-        order_insertion_by = ['-points']
+        order_insertion_by = ['posted']
 
     def __unicode__(self):
 
@@ -150,7 +150,7 @@ class Comment(MPTTModel):
 
     class MPTTMeta:
 
-        order_insertion_by = ['-points']
+        order_insertion_by = ['posted']
 
     def __unicode__(self):
 
