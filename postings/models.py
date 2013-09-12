@@ -120,7 +120,7 @@ class AlertComment(MPTTModel):
 
     def __unicode__(self):
 
-        return self.message[:49]
+        return self.message[:139]
 
     def get_absolute_url(self):
 
@@ -154,7 +154,7 @@ class Comment(MPTTModel):
 
     def __unicode__(self):
 
-        return self.message[:49]
+        return self.message[:139]
 
     def get_absolute_url(self):
 

@@ -14,9 +14,9 @@
 		<div>
 			<li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
 			{% if alert.posted|timesince != alert.updated|timesince %}
-				<li class="feed-alert">alert</li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by {{ alert.user.get_full_name }}</li>
+				<li class="feed-alert">alert</li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
 			{% else %}
-				<li class="feed-alert">alert</li><li class="feed-byline">{{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+				<li class="feed-alert">alert</li><li class="feed-byline">{{ alert.posted|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
 			{% endif %}
 		</div>
 	{% endfor %}
@@ -38,7 +38,7 @@
 	{% for posting in object_list %}
 		<div class="feed-{{ posting.variety }}">
 			<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
-			<li class="feed-variety">{{ posting.get_variety_display }}</li><li class="feed-byline">{{ posting.posted|timesince }} ago by {{ posting.user.get_full_name }}</li>
+			<li class="feed-variety">{{ posting.get_variety_display }}</li><li class="feed-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
 		</div>
 	{% endfor %}
 </ul>

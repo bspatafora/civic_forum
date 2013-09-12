@@ -3,6 +3,9 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth.models import User
+from itertools import chain
+from operator import attrgetter
 
 from guardian.decorators import permission_required_or_403
 
@@ -81,6 +84,22 @@ class PostingDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(PostingDetail, self).get_context_data(**kwargs)
         context['form'] = CommentForm(initial={'posting': self.object}) # Set "posting" field
+        return context
+
+
+class UserDetail(LoginRequiredMixin, DetailView):
+
+    model = User
+    context_object_name = "person"
+    template_name = 'postings/user_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserDetail, self).get_context_data(**kwargs)
+        alerts = Alert.objects.filter(user=self.object)
+        postings = Posting.objects.filter(user=self.object)
+        alert_comments = AlertComment.objects.filter(user=self.object)
+        comments = Comment.objects.filter(user=self.object)
+        context['submissions'] = sorted(chain(alerts, postings, alert_comments, comments), key=attrgetter('posted'), reverse=True)
         return context
 
 
