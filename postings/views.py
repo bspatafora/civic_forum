@@ -150,7 +150,9 @@ class CreateAlertComment(LoginRequiredMixin, CreateView):
         instance = form.save(commit=False)
         instance.user = self.request.user # Set "user" field
         instance.save()
-        return HttpResponseRedirect(reverse('alert_detail', kwargs={'pk': instance.alert.id}))
+        alert = reverse('alert_detail', kwargs={'pk': instance.alert.id})
+        link = alert + "#comment" + str(instance.pk)
+        return HttpResponseRedirect(link)
 
 
 class CreateComment(LoginRequiredMixin, CreateView):
@@ -163,7 +165,9 @@ class CreateComment(LoginRequiredMixin, CreateView):
         instance = form.save(commit=False)
         instance.user = self.request.user # Set "user" field
         instance.save()
-        return HttpResponseRedirect(reverse('posting_detail', kwargs={'pk': instance.posting.id}))
+        posting = reverse('posting_detail', kwargs={'pk': instance.posting.id})
+        link = posting + "#comment" + str(instance.pk)
+        return HttpResponseRedirect(link)
 
 
 class DeleteAlertComment(LoginRequiredMixin, DeleteView):

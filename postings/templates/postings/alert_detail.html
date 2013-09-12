@@ -38,7 +38,7 @@
 <ul class="root">
     {% recursetree comments %}
         <li {% if node.is_child_node %}style="padding-left: 2.25em"{% endif %}>
-            <ul>
+            <ul id="comment{{ node.id }}" class="comment">
             	{{ node.message|linebreaks }}
             	<li class="detail-byline">{{ node.posted|timesince }} ago by <a href="{% url "user_detail" pk=node.user.pk %}">{{ node.user.get_full_name }}</a></li>
             	<li class="reply-delete">

@@ -103,6 +103,9 @@ p {
 a {
 	color: #24416B;
 	text-decoration: none;
+}
+
+a:hover {
 	border-bottom: 1px dotted;
 }
 
@@ -259,4 +262,13 @@ textarea, input {
 #id_message {
 	height: 10em;
 	width: 100%;
+}
+
+.comment {
+	margin: 0 -0.5em; /* Margin and padding like this to pad highlight without misaligning comments */
+	padding: 0 0.5em;
+}
+
+.comment:target {
+	background-color: #FFFFE3;
 }
