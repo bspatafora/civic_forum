@@ -1,0 +1,34 @@
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+<h1>{{ person.get_full_name }}</h1>
+
+<ul>
+	{% for submission in submissions %}
+		<div>
+			<li class="feed-title"><a class="civically-link" href="{{ submission.get_absolute_url }}">{{ submission }}{% if submission.message|length > 140 and submission.posting or submission.alert %}...{% endif %}</a></li>
+			{% if submission.get_variety_display %}
+				<li class="feed-variety">{{ submission.get_variety_display }}</li>
+			{% elif submission.updated %}
+				<li class="feed-alert">alert</li>
+			{% elif submission.posting %}
+				<li class="feed-variety">comment in {{ submission.posting|truncatechars:25 }}</li>
+			{% else %}
+				<li class="feed-variety">comment in {{ submission.alert|truncatechars:25 }}</li>
+			{% endif %}
+			<li class="feed-byline">{{ submission.posted|timesince }} ago</li>
+		</div>
+	{% endfor %}
+</ul>
+
+<div class="pagination">
+	{% if page_obj.has_previous %}
+		<a id="previous" href="?page={{ page_obj.previous_page_number }}">&larr; previous</a>
+	{% endif %}
+	{% if page_obj.has_next %}
+		<a id="next" href="?page={{ page_obj.next_page_number }}">next &rarr;</a>
+	{% endif %}
+</div>
+
+{% endblock %}
