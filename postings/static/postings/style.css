@@ -254,6 +254,10 @@ textarea, input {
 	margin-left: 0.5em;
 }
 
+.errorlist {
+	color: #B50707;
+}
+
 #id_title {
 	height: 3.5em;
 	width: 100%;

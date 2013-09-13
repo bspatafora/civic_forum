@@ -1,4 +1,8 @@
-<h1>New comment</h1>
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+<h2>New comment</h2>
 
 <form action="{% url "create_alert_comment" %}" method="POST">
 	{% csrf_token %}
@@ -6,6 +10,7 @@
 		{{ form.as_ul }}
 	</ul>
 	<input type="submit" value="Post" />
+	<a class="cancel-button" href="javascript:history.back()">cancel</a>
 </form>
 
-<a href="{% url "alert_detail" pk=alertcomment.alert.id %}">cancel</a>
+{% endblock %}
