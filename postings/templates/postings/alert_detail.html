@@ -42,6 +42,7 @@
             	{{ node.message|linebreaks }}
             	<li class="detail-byline">{{ node.posted|timesince }} ago by <a href="{% url "user_detail" pk=node.user.pk %}">{{ node.user.get_full_name }}</a></li>
             	<li class="reply-delete">
+            		<a class="action reply-button" href="{{ alert.get_absolute_url }}#comment{{ node.id }}">link</a>
             		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
             		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
             		{% if "delete_alertcomment" in comment_perms %}

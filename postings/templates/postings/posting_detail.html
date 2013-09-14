@@ -31,10 +31,11 @@
 <ul class="root">
     {% recursetree comments %}
         <li {% if node.is_child_node %}style="padding-left: 2.25em"{% endif %}>
-            <ul id="comment{{ node.id }}" class="comment">
+            <ul id="comment{{ node.id }}" {% if node.is_root_node %}class="comment parents"{% else %}class="comment"{% endif %}>
             	{{ node.message|linebreaks }}
             	<li class="detail-byline">{{ node.posted|timesince }} ago by <a href="{% url "user_detail" pk=node.user.pk %}">{{ node.user.get_full_name }}</a></li>
             	<li class="reply-delete">
+            		<a class="action reply-button" href="{{ posting.get_absolute_url }}#comment{{ node.id }}">link</a>
             		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
             		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
             		{% if "delete_comment" in comment_perms %}

@@ -1,5 +1,11 @@
 $(document).ready(function() {
 
+	$("#menu-bar").hide();
+
+	$("#menu-selector").click(function () {
+		$("#menu-bar").toggle();
+	});
+
 	$(".comment-reply").hide();
 
 	$(".reply-button").click(function () {
@@ -12,10 +18,10 @@ $(document).ready(function() {
 		$("#comment-" + button).hide();
 	});
 
-	$("#variety-bar").hide();
+	$("#varieties").hide();
 
 	$("#filter-postings-link").click(function () {
-		$("#variety-bar").toggle();
+		$("#varieties").toggle();
 	});
 
 	$("#community-box").click(function() {
@@ -23,6 +29,14 @@ $(document).ready(function() {
 			$(".feed-co").slideDown(350);
 		} else {
 			$(".feed-co").slideUp(350);
+		}
+	});
+
+	$("#events-box").click(function() {
+		if($(this).is(":checked")) { 
+			$(".feed-ev").slideDown(350);
+		} else {
+			$(".feed-ev").slideUp(350);
 		}
 	});
 
@@ -39,14 +53,6 @@ $(document).ready(function() {
 			$(".feed-po").slideDown(350);
 		} else {
 			$(".feed-po").slideUp(350);
-		}
-	});
-
-	$("#forum-box").click(function() {
-		if($(this).is(":checked")) { 
-			$(".feed-fo").slideDown(350);
-		} else {
-			$(".feed-fo").slideUp(350);
 		}
 	});
 

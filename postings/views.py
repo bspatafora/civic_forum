@@ -48,7 +48,7 @@ class CreateAlert(LoginRequiredMixin, CreateView):
         instance.save()
         return HttpResponseRedirect(reverse('alert_detail', kwargs={'pk': instance.id}))
 
-    @method_decorator(permission_required('postings.create_alert', raise_exception=True))
+    @method_decorator(permission_required('postings.add_alert', raise_exception=True))
     def dispatch(self, request, *args, **kwargs):
         return super(CreateAlert, self).dispatch(request, *args, **kwargs)
 

@@ -33,6 +33,7 @@ ol, ul {
 }
 
 #top-bar {
+	position: relative;
 	width: 45em;
 	margin: 0.85em auto 2em auto;
 }
@@ -47,13 +48,49 @@ ol, ul {
 	color: #222;
 }
 
-.bar-link {
-	margin-left: 1.25em;
-	font-size: 1.05em;
+#menu-icon {
+	position: absolute;
+	top: -0.41em;
+	right: 0;
+	font-size: 4em;
 }
 
-.bar-link:visited {
-	color: #222 !important;
+#menu:hover {
+	border-bottom: none;
+}
+
+#menu-selector {
+	height: 1.225em;
+	width: 2.1em;
+	position: absolute;
+	top: 1.15em;
+	right: 0;
+}
+
+#menu-selector:hover {
+	border-bottom: none;
+}
+
+#menu-bar {
+	width: 45em;
+	margin: -2em auto 2em auto;
+}
+
+.menu-item {
+	display: block;
+	font-size: 1.35em;
+	text-align: right;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+.menu-item:hover {
+	color: #B50707 !important;
+	border-bottom: none;
+}
+
+.menu-item:visited {
+	color: #222;
 }
 
 #content {
@@ -90,7 +127,8 @@ h2 {
 }
 
 h3 {
-	margin-bottom: 0.5em;
+	margin-top: 1.5em;
+	margin-bottom: 1em;
 	font-size: 1.75em;
 }
 
@@ -175,13 +213,13 @@ textarea, input {
 	color: #222;
 }
 
-#variety-bar {
-	width: 45em;
-	margin: -1em auto 1.55em auto;
+#varieties {
+	width: 15em;
+	margin: -2em 0 1.55em 4.5em;
 }
 
-.variety-box {
-	margin-left: 1em;
+label {
+	display: block;
 }
 
 #more-alerts {
@@ -235,10 +273,6 @@ textarea, input {
 	color: #777777;
 }
 
-.children {
-	border-left: 1px dotted #777777;
-}
-
 .reply-delete {
 	margin-top: -1.25em; /* To bring closer (if present) to detail-byline */
 	margin-bottom: 1.5em;
@@ -269,10 +303,18 @@ textarea, input {
 }
 
 .comment {
-	margin: 0 -0.5em; /* Margin and padding like this to pad highlight without misaligning comments */
+	margin: 3em -0.5em 0 -0.5em; /* Margin and padding like this to pad highlight without misaligning comments */
 	padding: 0 0.5em;
 }
 
 .comment:target {
 	background-color: #FFFFE3;
+}
+
+.children {
+	border-left: 1px dotted #777777;
+}
+
+.parents {
+	
 }

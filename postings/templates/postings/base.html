@@ -10,11 +10,15 @@
 <body>
 	<div id="top-bar">
 		<a id="civically" class="civically-link" href="{% url "feed" %}">civically</a>
-		<a class="bar-link civically-link" href="{% url "create_posting" %}">create posting</a>
-		{% if perms.postings.create_alert %}
-			<a class="bar-link civically-link" href="{% url "create_alert" %}">create alert</a>
+		<span id="menu-icon" href="#" onclick="return false;">&equiv;</span>
+		<a id="menu-selector" href="#" onclick="return false;"></a>
+	</div>
+	<div id="menu-bar">
+		<a class="menu-item" href="{% url "create_posting" %}">create posting</a>
+		{% if perms.postings.add_alert %}
+			<a class="menu-item" href="{% url "create_alert" %}">create alert</a>
 		{% endif %}
-		<a class="bar-link civically-link" href="{% url "logout" %}">log out</a>
+		<a class="menu-item" href="{% url "logout" %}">log out</a>
 	</div>
 	<div id="content">
 		{% block content %}{% endblock %}

@@ -53,10 +53,10 @@ class Alert(models.Model):
 class Posting(models.Model):
 
     varieties = (
-        ('co', 'community'),
+        ('co', 'community forum'),
+        ('ev', 'events'),
         ('go', 'local government'),
-        ('po', 'politics'),
-        ('fo', 'open forum'),
+        ('po', 'political discussion'),
         ('vo', 'volunteering'),
     )
 
