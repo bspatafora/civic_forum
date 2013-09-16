@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 	$("#menu-bar").hide();
 
-	$("#menu-selector").click(function () {
+	$("#menu-icon").click(function () {
 		$("#menu-bar").toggle();
 	});
 

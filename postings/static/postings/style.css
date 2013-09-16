@@ -50,25 +50,10 @@ ol, ul {
 
 #menu-icon {
 	position: absolute;
-	top: -0.41em;
+	top: 0.55em;
 	right: 0;
-	font-size: 4em;
-}
-
-#menu:hover {
-	border-bottom: none;
-}
-
-#menu-selector {
-	height: 1.225em;
-	width: 2.1em;
-	position: absolute;
-	top: 1.15em;
-	right: 0;
-}
-
-#menu-selector:hover {
-	border-bottom: none;
+	font-size: 1.25em;
+	cursor: pointer;
 }
 
 #menu-bar {
@@ -155,6 +140,9 @@ textarea, input {
 	font-family: 'Libre Baskerville';
 	font-weight: 400;
 	line-height: 1.5;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 .detail-textarea {
