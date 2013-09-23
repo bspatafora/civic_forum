@@ -30,6 +30,9 @@ ol, ul {
 #id_username, #id_password {
 	height: 1.5em;
 	width: 15em;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
 }
 
 #top-bar {
