@@ -74,7 +74,7 @@ ol, ul {
 }
 
 .menu-item:hover {
-	color: #B50707;
+	color: #B50707 !important;
 	border-bottom: none;
 }
 

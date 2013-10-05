@@ -1,0 +1,20 @@
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+{% if item.title %}
+	<h2>{{ item }}</h2>
+{% endif %}
+
+<p>{{ item.message|linebreaks }}</p>
+
+<form action="{% url "cast_vote" posting_pk=access_to.id item_type=item_type item_pk=item_pk %}" method="POST">
+	{% csrf_token %}
+	<ul>
+		{{ form.as_ul }}
+	</ul>
+	<input type="submit" value="Cast vote" />
+	<a class="cancel-button" href="{% url "feed" %}">cancel</a>
+</form>
+
+{% endblock %}

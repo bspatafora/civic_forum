@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{% load guardian_tags %}
+
 {% load staticfiles %}
 <div id="feed-image-container">
 	<img class="feed-image" src="{% static "postings/images/fountain.jpg" %}" alt="Fountain">
@@ -37,7 +39,12 @@
 <ul>
 	{% for posting in object_list %}
 		<div class="feed-{{ posting.variety }}">
-			<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
+			{% get_obj_perms user for posting as "posting_perms" %}
+                {% if "view_posting" in posting_perms %}
+					<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
+			    {% else %}
+			    	<li class="feed-title"><a class="civically-link" href="{% url "vote" posting_pk=posting.pk %}">{{ posting }}</a></li>
+			    {% endif %}
 			<li class="feed-variety">{{ posting.get_variety_display }}</li><li class="feed-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
 		</div>
 	{% endfor %}

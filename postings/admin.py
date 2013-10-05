@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.forms import ModelForm, Textarea, HiddenInput
-from postings.models import Alert, Posting, AlertComment, Comment
+from postings.models import Alert, Posting, Vote, AlertComment, Comment
 
 from mptt.admin import MPTTAdminForm
 
@@ -89,3 +89,11 @@ class PostingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Posting, PostingAdmin)
+
+
+# Vote admin
+class VoteAdmin(admin.ModelAdmin):
+    list_display = ('content_object', 'content_type', 'user', 'more_like_this', 'posted')
+
+
+admin.site.register(Vote, VoteAdmin)

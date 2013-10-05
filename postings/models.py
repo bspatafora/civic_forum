@@ -2,6 +2,8 @@ from django.db import models
 from django.forms import ModelForm, Textarea, HiddenInput, RadioSelect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -83,6 +85,9 @@ class Posting(models.Model):
     class Meta:
 
         ordering = ['-posted']
+        permissions = (
+            ('view_posting', 'View posting'),
+        )
 
     def __unicode__(self):
 
@@ -96,6 +101,35 @@ class Posting(models.Model):
 
         super(Posting, self).save(*args, **kwargs)
         assign_perm('postings.delete_posting', self.user, self)
+        return
+
+
+class Vote(models.Model):
+
+    more_like_this_choices = (
+        ('ys', 'yes'),
+        ('no', 'no'),
+    )
+
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey()
+    access_to = models.ForeignKey(Posting)
+    user = models.ForeignKey(User)
+    posted = models.DateTimeField(
+        auto_now_add=True,
+    )
+    more_like_this = models.CharField(
+        max_length=2,
+        choices=more_like_this_choices,
+        blank=False,
+        default='',
+    )
+
+    def save(self, *args, **kwargs):
+
+        super(Vote, self).save(*args, **kwargs)
+        assign_perm('postings.view_posting', self.user, self.access_to)
         return
 
 
@@ -190,6 +224,17 @@ class PostingForm(ModelForm):
             'variety': RadioSelect,
         }
         fields = ('title', 'message', 'variety')
+
+
+class VoteForm(ModelForm):
+
+    class Meta:
+
+        model = Vote
+        widgets = {
+            'more_like_this': RadioSelect,
+        }
+        fields = ('more_like_this',)
 
 
 class AlertCommentForm(ModelForm):

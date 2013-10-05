@@ -6,10 +6,12 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from itertools import chain
 from operator import attrgetter
+from datetime import datetime, timedelta
+import random
 
 from guardian.decorators import permission_required_or_403
 
-from postings.models import Alert, Posting, AlertComment, Comment, AlertForm, PostingForm, AlertCommentForm, CommentForm
+from postings.models import Alert, Posting, Vote, AlertComment, Comment, AlertForm, PostingForm, VoteForm, AlertCommentForm, CommentForm
 
 
 class LoginRequiredMixin(object):
@@ -86,6 +88,11 @@ class PostingDetail(LoginRequiredMixin, DetailView):
         context['form'] = CommentForm(initial={'posting': self.object}) # Set "posting" field
         return context
 
+    # Allow user to view posting only if they have already cast a vote on some random, recent item
+    @method_decorator(permission_required_or_403('postings.view_posting', (Posting, 'pk', 'pk')))
+    def dispatch(self, request, *args, **kwargs):
+        return super(PostingDetail, self).dispatch(request, *args, **kwargs)
+
 
 class UserDetail(LoginRequiredMixin, DetailView):
 
@@ -100,6 +107,52 @@ class UserDetail(LoginRequiredMixin, DetailView):
         alert_comments = AlertComment.objects.filter(user=self.object)
         comments = Comment.objects.filter(user=self.object)
         context['submissions'] = sorted(chain(alerts, postings, alert_comments, comments), key=attrgetter('posted'), reverse=True)
+        return context
+
+
+class CastVote(LoginRequiredMixin, CreateView):
+
+    form_class = VoteForm
+    template_name = 'postings/vote.html'
+
+    def get(self, request, *args, **kwargs):
+        # Select a random item from all postings, alert_comments, and comments posted in last 3 weeks
+        start_date = datetime.today() - timedelta(days=30) # If selection "stops working" again, change this, idiot
+        postings = Posting.objects.filter(posted__gte=start_date)
+        alert_comments = AlertComment.objects.filter(posted__gte=start_date)
+        comments = Comment.objects.filter(posted__gte=start_date)
+        collection = list(chain(postings, alert_comments, comments))
+        random_index = random.randint(0, len(collection) - 1)
+        self.random_item = collection[random_index]
+        return super(CastVote, self).get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        # Set random_item depending on item_type (passed as url kwarg)
+        if self.kwargs['item_type'] == 'Posting':
+            self.random_item = Posting.objects.get(pk=self.kwargs['item_pk'])
+        elif self.kwargs['item_type'] == 'AlertComment':
+            self.random_item = AlertComment.objects.get(pk=self.kwargs['item_pk'])
+        elif self.kwargs['item_type'] == 'Comment':
+            self.random_item = Comment.objects.get(pk=self.kwargs['item_pk'])
+        return super(CastVote, self).post(request, *args, **kwargs)
+
+    def form_valid(self, form, **kwargs):
+        instance = form.save(commit=False)
+        instance.user = self.request.user
+        instance.content_object = self.random_item
+        instance.access_to = Posting.objects.get(pk=self.kwargs['posting_pk'])
+        instance.save()
+        # if instance.more_like_this == 'ys':
+            # instance.content_object.points += 1
+        return HttpResponseRedirect(reverse('posting_detail', kwargs={'pk': self.kwargs['posting_pk']})) # Redirect to posting user was trying to view
+
+    def get_context_data(self, **kwargs):
+        context = super(CastVote, self).get_context_data(**kwargs)
+        context['item'] = self.random_item
+        context['access_to'] = Posting.objects.get(pk=self.kwargs['posting_pk'])
+        # item_type and item_pk passed as url kwargs so random_item in POST is one grabbed in GET
+        context['item_type'] = self.random_item.__class__.__name__
+        context['item_pk'] = self.random_item.pk
         return context
 
 
