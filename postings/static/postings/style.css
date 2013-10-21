@@ -200,14 +200,13 @@ textarea, input {
 
 #filter-postings {
 	display: inline-block;
-	margin-left: 3em;
 	font-size: 1.3em;
 	color: #222;
 }
 
 #varieties {
 	width: 15em;
-	margin: -2em 0 1.55em 4.5em;
+	margin: -2em 0 1.55em 1.5em;
 }
 
 label {
@@ -217,7 +216,6 @@ label {
 #more-alerts {
 	margin-top: -1.5em;
 	margin-bottom: 2.5em;
-	margin-right: 3em;
 	font-size: 1.3em;
 	text-align: right;
 	color: #B50707;

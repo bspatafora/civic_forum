@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.utils import timezone
 
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -73,7 +74,7 @@ class Posting(models.Model):
         auto_now_add=True,
     )
     points = models.IntegerField(
-        default=0,
+        default=1,
     )
     variety = models.CharField(
         max_length=2,
@@ -81,6 +82,13 @@ class Posting(models.Model):
         blank=False,
         default='community'
     )
+
+    def get_sort_value(self):
+        time_since = timezone.now() - self.posted
+        hours = float((time_since.days * 24) + (time_since.seconds / 3600))
+        return self.points / hours**2
+
+    sort_value = property(get_sort_value)
 
     class Meta:
 
@@ -126,6 +134,10 @@ class Vote(models.Model):
         default='',
     )
 
+    def __unicode__(self):
+
+        return self.content_object
+
     def save(self, *args, **kwargs):
 
         super(Vote, self).save(*args, **kwargs)
@@ -145,7 +157,7 @@ class AlertComment(MPTTModel):
         auto_now_add=True,
     )
     points = models.IntegerField(
-        default=0,
+        default=1,
     )
 
     class MPTTMeta:
@@ -179,8 +191,15 @@ class Comment(MPTTModel):
         auto_now_add=True,
     )
     points = models.IntegerField(
-        default=0,
+        default=1,
     )
+
+    # def get_sort_value(self):
+        # time_since = timezone.now() - self.posted
+        # hours = float((time_since.days * 24) + (time_since.seconds / 3600))
+        # return self.points / hours**2
+
+    # sort_value = property(get_sort_value)
 
     class MPTTMeta:
 

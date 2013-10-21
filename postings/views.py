@@ -22,13 +22,15 @@ class LoginRequiredMixin(object):
 
 class Feed(LoginRequiredMixin, ListView):
 
-    model = Posting
     template_name = 'postings/feed.html'
     paginate_by = 25
 
+    def get_queryset(self):
+        return sorted(Posting.objects.all(), key=attrgetter('sort_value'), reverse=True)
+
     def get_context_data(self, **kwargs):
         context = super(Feed, self).get_context_data(**kwargs)
-        context['alerts'] = Alert.objects.all()[:3] # Add 3 alerts
+        context['alerts'] = Alert.objects.all()[:3] # Add 3 most recent alerts
         return context
 
 
@@ -106,7 +108,8 @@ class UserDetail(LoginRequiredMixin, DetailView):
         postings = Posting.objects.filter(user=self.object)
         alert_comments = AlertComment.objects.filter(user=self.object)
         comments = Comment.objects.filter(user=self.object)
-        context['submissions'] = sorted(chain(alerts, postings, alert_comments, comments), key=attrgetter('posted'), reverse=True)
+        votes = Vote.objects.filter(user=self.object)
+        context['submissions'] = sorted(chain(alerts, postings, alert_comments, comments, votes), key=attrgetter('posted'), reverse=True)
         return context
 
 
@@ -117,7 +120,7 @@ class CastVote(LoginRequiredMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         # Select a random item from all postings, alert_comments, and comments posted in last 3 weeks
-        start_date = datetime.today() - timedelta(days=30) # If selection "stops working" again, change this, idiot
+        start_date = datetime.today() - timedelta(days=50) # If selection "stops working" again, change this, idiot
         postings = Posting.objects.filter(posted__gte=start_date)
         alert_comments = AlertComment.objects.filter(posted__gte=start_date)
         comments = Comment.objects.filter(posted__gte=start_date)
@@ -142,15 +145,19 @@ class CastVote(LoginRequiredMixin, CreateView):
         instance.content_object = self.random_item
         instance.access_to = Posting.objects.get(pk=self.kwargs['posting_pk'])
         instance.save()
-        # if instance.more_like_this == 'ys':
-            # instance.content_object.points += 1
+
+        # Change point value of content_object
+        if instance.more_like_this == 'ys':
+            self.random_item.points += 1
+            self.random_item.save()
+
         return HttpResponseRedirect(reverse('posting_detail', kwargs={'pk': self.kwargs['posting_pk']})) # Redirect to posting user was trying to view
 
     def get_context_data(self, **kwargs):
         context = super(CastVote, self).get_context_data(**kwargs)
         context['item'] = self.random_item
         context['access_to'] = Posting.objects.get(pk=self.kwargs['posting_pk'])
-        # item_type and item_pk passed as url kwargs so random_item in POST is one grabbed in GET
+        # Item class name and item_pk passed as url kwargs so random_item in POST is one grabbed in GET
         context['item_type'] = self.random_item.__class__.__name__
         context['item_pk'] = self.random_item.pk
         return context

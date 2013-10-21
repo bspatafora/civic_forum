@@ -7,14 +7,31 @@
 <ul>
 	{% for submission in submissions %}
 		<div>
-			<li class="feed-title"><a class="civically-link" {% if submission.title %}href="{{ submission.get_absolute_url }}"{% else %}href="{{ submission.get_absolute_url }}#comment{{ submission.pk }}"{% endif %}>{{ submission }}{% if submission.message|length > 140 and submission.posting or submission.alert %}...{% endif %}</a></li>
+			<li class="feed-title">
+				{% if submission.content_type %}
+				    {{ person.first_name }} voted to see more content like this: <br>
+				{% endif %}
+				<a class="civically-link" 
+				    {% if submission.title %}
+				        href="{{ submission.get_absolute_url }}"
+				    {% elif submission.parent %}
+				        href="{{ submission.get_absolute_url }}#comment{{ submission.pk }}"
+				    {% elif submission.content_object.title %}
+				        href="{{ submission.content_object.get_absolute_url }}"
+				    {% elif submission.content_object.parent %}
+				        href="{{ submission.content_object.get_absolute_url }}#comment{{ submission.content_object.pk }}"
+				    {% endif %}>
+				    {{ submission }}
+				    {% if submission.message|length > 140 and submission.parent or submission.content_object.parent %}...{% endif %}
+			    </a>
+			</li>
 			{% if submission.get_variety_display %} {# Submission is Posting #}
 				<li class="feed-variety">{{ submission.get_variety_display }}</li>
 			{% elif submission.updated %} {# Submission is Alert #}
 				<li class="feed-alert">alert</li>
 			{% elif submission.posting %} {# Submission is Comment #}
 				<li class="feed-variety">comment in <a href="{{ submission.get_absolute_url }}">{{ submission.posting|truncatechars:30 }}</a></li>
-			{% else %} {# Submission is AlertComment #}
+			{% elif submission.alert %} {# Submission is AlertComment #}
 				<li class="feed-variety">comment in <a href="{{ submission.get_absolute_url }}">{{ submission.alert|truncatechars:30 }}</li>
 			{% endif %}
 			<li class="feed-byline">{{ submission.posted|timesince }} ago</li>
