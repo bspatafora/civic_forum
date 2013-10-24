@@ -9,9 +9,9 @@
 		<div>
 			<li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
 			{% if alert.posted|timesince != alert.updated|timesince %}
-				<li class="feed-alert">alert</li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by {{ alert.user.get_full_name }}</li>
+				<li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
 			{% else %}
-				<li class="feed-alert">alert</li><li class="feed-byline">{{ alert.posted|timesince }} ago by {{ alert.user.get_full_name }}</li>
+				<li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="feed-byline">{{ alert.posted|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
 			{% endif %}
 		</div>
 	{% endfor %}

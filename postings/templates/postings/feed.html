@@ -16,17 +16,26 @@
 		<div>
 			<li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
 			{% if alert.posted|timesince != alert.updated|timesince %}
-				<li class="feed-alert">alert</li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
+				<li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
 			{% else %}
-				<li class="feed-alert">alert</li><li class="feed-byline">{{ alert.posted|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
+				<li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="feed-byline">{{ alert.posted|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
 			{% endif %}
 		</div>
 	{% endfor %}
 </ul>
 
+<div class="horizontal_rule_feed"></div>
+
+<!--
 <ul>
-	<li id="filter-postings"><a id="filter-postings-link" class="civically-link" href="#" onclick="return false;">filter postings &darr;</a></li><li id="more-alerts"><a id="more-alerts-link" class="civically-link" href="{% url "alerts" %}">view more alerts &rarr;</a></li>
+	<li id="filter-postings">
+		<a id="filter-postings-link" class="civically-link" href="#" onclick="return false;">filter postings &darr;</a>
+	</li>
+	<li id="more-alerts">
+		<a id="more-alerts-link" class="civically-link" href="{% url "alerts" %}">view more alerts &rarr;</a>
+	</li>
 </ul>
+
 
 <form id="varieties">
 	<label><input id="community-box" type="checkbox" checked>community forum</label>
@@ -35,6 +44,7 @@
 	<label><input id="politics-box" type="checkbox" checked>political discussion</label>
 	<label><input id="volunteering-box" type="checkbox" checked>volunteering</label>
 </form>
+-->
 
 <ul>
 	{% for posting in object_list %}

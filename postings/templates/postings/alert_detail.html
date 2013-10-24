@@ -3,6 +3,7 @@
 {% block content %}
 
 {% load guardian_tags %}
+{% load placeholder %}
 
 <h2>{{ alert }}</h2>
 
@@ -27,18 +28,25 @@
 <form action="{% url "create_alert_comment" %}" method="POST">
 	{% csrf_token %}
 	<ul class="detail-textarea">
-		{{ form.message }}
+		{{ form.message|placeholder:"Have a question? Got something to contribute? Type here to reply to the above alert." }}
 		{{ form.alert }}
 	</ul>
 	<input type="submit" value="Post" />
 </form>
+
+{% if alert.alertcomment_set.all|length == 0 %}
+    <p class="no-comments">It doesn&rsquo;t look like anyone has commented on this alert yet.</p>
+{% endif %}
 
 {% load mptt_tags %}
 {% with comments=alert.alertcomment_set.all %}
 <ul class="root">
     {% recursetree comments %}
         <li {% if node.is_child_node %}style="padding-left: 2.25em"{% endif %}>
-            <ul id="comment{{ node.id }}" class="comment">
+            <ul id="comment{{ node.id }}" {% if node.is_root_node %}class="comment parents"{% else %}class="comment"{% endif %}>
+            	{% if node.is_root_node %}
+            	    <div class="horizontal_rule_detail"></div>
+            	{% endif %}
             	{{ node.message|linebreaks }}
             	<li class="detail-byline">{{ node.posted|timesince }} ago by <a href="{% url "user_detail" pk=node.user.pk %}">{{ node.user.get_full_name }}</a></li>
             	<li class="reply-delete">
@@ -53,7 +61,7 @@
 			<form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_alert_comment" %}" method="POST">
 				{% csrf_token %}
 				<ul class="detail-textarea">
-					{{ form.message }}
+					{{ form.message|placeholder:"Type here to reply to the above comment." }}
 					{{ form.alert }} {# To allow for redirect #}
 				</ul>
 				{% if node.id %}    

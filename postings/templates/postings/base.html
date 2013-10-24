@@ -10,7 +10,7 @@
 <body>
 	<div id="top-bar">
 		<a id="civically" class="civically-link" href="{% url "feed" %}">civically</a>
-		<span id="menu-icon" href="#" onclick="return false;">menu &darr;</span>
+		<span id="menu-icon" href="#" onclick="return false;">-&thinsp;menu&thinsp;-</span>
 	</div>
 	<div id="menu-bar">
 		<a class="menu-item" href="{% url "create_posting" %}">create posting</a>
@@ -22,6 +22,7 @@
 	<div id="content">
 		{% block content %}{% endblock %}
 	</div>
+	<div id="footer"></div>
 	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
 	<script src="{% static 'postings/javascript.js' %}"></script>
 </body>
