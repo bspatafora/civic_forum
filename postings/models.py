@@ -86,6 +86,8 @@ class Posting(models.Model):
     def get_sort_value(self):
         time_since = timezone.now() - self.posted
         hours = float((time_since.days * 24) + (time_since.seconds / 3600))
+        if hours == 0:
+            hours = 1 # Never divide by zero!
         return self.points / hours**2
 
     sort_value = property(get_sort_value)
@@ -109,6 +111,7 @@ class Posting(models.Model):
 
         super(Posting, self).save(*args, **kwargs)
         assign_perm('postings.delete_posting', self.user, self)
+        assign_perm('postings.view_posting', self.user, self)
         return
 
 
@@ -197,6 +200,8 @@ class Comment(MPTTModel):
     # def get_sort_value(self):
         # time_since = timezone.now() - self.posted
         # hours = float((time_since.days * 24) + (time_since.seconds / 3600))
+        # if hours == 0:
+            # hours = 1
         # return self.points / hours**2
 
     # sort_value = property(get_sort_value)
