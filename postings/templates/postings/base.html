@@ -10,7 +10,7 @@
 <body>
 	<div id="top-bar">
 		<a id="civically" class="civically-link" href="{% url "feed" %}">civically</a>
-		<span id="menu-icon" href="#" onclick="return false;">-&thinsp;menu&thinsp;-</span>
+		<span id="menu-icon" unselectable="on" href="#" onclick="return false;">-&thinsp;menu&thinsp;-</span>
 	</div>
 	<div id="menu-bar">
 		<a class="menu-item" href="{% url "create_posting" %}">create posting</a>
