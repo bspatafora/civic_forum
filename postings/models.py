@@ -197,18 +197,18 @@ class Comment(MPTTModel):
         default=1,
     )
 
-    # def get_sort_value(self):
-        # time_since = timezone.now() - self.posted
-        # hours = float((time_since.days * 24) + (time_since.seconds / 3600))
-        # if hours == 0:
-            # hours = 1
-        # return self.points / hours**2
+    def get_sort_value(self):
+        time_since = timezone.now() - self.posted
+        hours = float((time_since.days * 24) + (time_since.seconds / 3600))
+        if hours == 0:
+            hours = 1 # Never divide by zero!
+        return self.points / hours**2
 
-    # sort_value = property(get_sort_value)
+    sort_value = property(get_sort_value)
 
-    class MPTTMeta:
+    # class MPTTMeta:
 
-        order_insertion_by = ['posted']
+        # order_insertion_by = ['posted']
 
     def __unicode__(self):
 

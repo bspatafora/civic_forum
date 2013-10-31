@@ -5,7 +5,7 @@
 <h1>{{ person.get_full_name }}</h1>
 
 <ul>
-	{% for submission in submissions %}
+	{% for submission in object_list %}
 		<div>
 			<li class="feed-title">
 				{% if submission.content_type %}
@@ -37,11 +37,11 @@
 			{% if submission.get_variety_display %} {# Submission is Posting #}
 				<li class="feed-variety">{{ submission.get_variety_display }}</li>
 			{% elif submission.updated %} {# Submission is Alert #}
-				<li class="feed-alert">alert</li>
+				<li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li>
 			{% elif submission.posting %} {# Submission is Comment #}
 				<li class="feed-variety">comment in <a href="{{ submission.get_absolute_url }}">{{ submission.posting|truncatechars:30 }}</a></li>
 			{% elif submission.alert %} {# Submission is AlertComment #}
-				<li class="feed-variety">comment in <a href="{{ submission.get_absolute_url }}">{{ submission.alert|truncatechars:30 }}</li>
+				<li class="feed-variety">comment in <a href="{{ submission.get_absolute_url }}">{{ submission.alert|truncatechars:30 }}</a></li>
 			{% endif %}
 			<li class="feed-byline">{{ submission.posted|timesince }} ago</li>
 		</div>

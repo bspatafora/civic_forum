@@ -32,6 +32,7 @@
 {% endif %}
 
 {% load mptt_tags %}
+{# with comments=comment_set #}
 {% with comments=posting.comment_set.all %}
 <ul class="root">
     {% recursetree comments %}

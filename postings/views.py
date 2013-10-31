@@ -88,6 +88,7 @@ class PostingDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(PostingDetail, self).get_context_data(**kwargs)
         context['form'] = CommentForm(initial={'posting': self.object}) # Set "posting" field
+        # context['comment_set'] = sorted(self.object.comment_set.all(), key=attrgetter('sort_value'), reverse=True)
         return context
 
     # Allow user to view posting only if they have already cast a vote on some random, recent item
@@ -96,20 +97,22 @@ class PostingDetail(LoginRequiredMixin, DetailView):
         return super(PostingDetail, self).dispatch(request, *args, **kwargs)
 
 
-class UserDetail(LoginRequiredMixin, DetailView):
+class UserDetail(LoginRequiredMixin, ListView):
 
-    model = User
-    context_object_name = "person"
     template_name = 'postings/user_detail.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        alerts = Alert.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
+        postings = Posting.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
+        alert_comments = AlertComment.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
+        comments = Comment.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
+        votes = Vote.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
+        return sorted(chain(alerts, postings, alert_comments, comments, votes), key=attrgetter('posted'), reverse=True)
 
     def get_context_data(self, **kwargs):
         context = super(UserDetail, self).get_context_data(**kwargs)
-        alerts = Alert.objects.filter(user=self.object)
-        postings = Posting.objects.filter(user=self.object)
-        alert_comments = AlertComment.objects.filter(user=self.object)
-        comments = Comment.objects.filter(user=self.object)
-        votes = Vote.objects.filter(user=self.object)
-        context['submissions'] = sorted(chain(alerts, postings, alert_comments, comments, votes), key=attrgetter('posted'), reverse=True)
+        context['person'] = User.objects.get(pk=self.kwargs['pk'])
         return context
 
 
