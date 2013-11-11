@@ -118,8 +118,8 @@ class Posting(models.Model):
 class Vote(models.Model):
 
     more_like_this_choices = (
-        ('ys', 'yes'),
-        ('no', 'no'),
+        ('ys', 'Yes, absolutely'),
+        ('no', 'Not particularly'),
     )
 
     content_type = models.ForeignKey(ContentType)
@@ -206,9 +206,9 @@ class Comment(MPTTModel):
 
     sort_value = property(get_sort_value)
 
-    # class MPTTMeta:
+    class MPTTMeta:
 
-        # order_insertion_by = ['posted']
+        order_insertion_by = ['-points']
 
     def __unicode__(self):
 

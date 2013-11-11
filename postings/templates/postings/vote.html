@@ -2,16 +2,22 @@
 
 {% block content %}
 
-{% if item.title %}
-	<h2>{{ item }}</h2>
-{% endif %}
+<p>You just selected a posting. To view it, vote on the randomly selected {% if item.title %}posting{% else %}comment{% endif %} below.</p>
 
-<p>{{ item.message|linebreaks }}</p>
+<div id="item">
+	{% if item.title %}
+		<h2>{{ item }}</h2>
+	{% endif %}
+
+	<p>{{ item.message|linebreaks }}</p>
+</div>
 
 <form action="{% url "cast_vote" posting_pk=access_to.id item_type=item_type item_pk=item_pk %}" method="POST">
 	{% csrf_token %}
-	<ul>
-		{{ form.as_ul }}
+	<ul class="form_questions">
+		<p>Do you think it would be good for the community if there were more {% if item.title %}posting{% else %}comment{% endif %}s like this?</p>
+		{{ form.more_like_this.errors }}
+		{{ form.more_like_this }}
 	</ul>
 	<input type="submit" value="Cast vote" />
 	<a class="cancel-button" href="{% url "feed" %}">cancel</a>

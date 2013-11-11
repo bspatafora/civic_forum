@@ -261,6 +261,16 @@ label {
 	margin-bottom: 2em;
 }
 
+.form_questions {
+	margin-bottom: 0.9em;
+}
+
+#item {
+	margin: 1em 0;
+	padding: 1em 2em;
+	border: 1px dotted;
+}
+
 .detail-byline {
 	margin-top: -0.75em;
 	margin-bottom: 1.5em;
