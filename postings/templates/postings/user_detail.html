@@ -12,13 +12,13 @@
 				    <span class="vote-message">{{ person.first_name }} voted to see more content like this: <br></span>
 				{% endif %}
 				<a class="civically-link" 
-				    {% if submission.title %}
+				    {% if submission.title %} {# Posting/Alert #}
 				        href="{{ submission.get_absolute_url }}"
-				    {% elif submission.alert or submission.posting %}
+				    {% elif submission.alert or submission.posting %} {# Comment/AlertComment #}
 				        href="{{ submission.get_absolute_url }}#comment{{ submission.pk }}"
-				    {% elif submission.content_object.title %}
+				    {% elif submission.content_object.title %} {# Vote on Posting #}
 				        href="{{ submission.content_object.get_absolute_url }}"
-				    {% elif submission.content_object.alert or submission.content_object.posting %}
+				    {% elif submission.content_object.alert or submission.content_object.posting %} {# Vote on Comment/AlertComment #}
 				        href="{{ submission.content_object.get_absolute_url }}#comment{{ submission.content_object.pk }}"
 				    {% endif %}>
 				    {{ submission }}

@@ -1,13 +1,15 @@
 {% extends "postings/base.html" %}
 
 {% block content %}
+{% load placeholder %}
 
 <h2>New alert</h2>
 
 <form action="{% url "create_alert" %}" method="POST">
 	{% csrf_token %}
 	<ul class="form_questions">
-		{{ form.as_ul }}
+		{{ form.title|placeholder:"Title" }}
+		{{ form.message|placeholder:"Message" }}
 	</ul>
 	<input type="submit" value="Post" />
 	<a class="cancel-button" href="{% url "feed" %}">cancel</a>

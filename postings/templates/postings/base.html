@@ -10,14 +10,19 @@
 <body>
 	<div id="top-bar">
 		<a id="civically" class="civically-link" href="{% url "feed" %}">civically</a>
-		<span id="menu-icon" unselectable="on" href="#" onclick="return false;">-&thinsp;menu&thinsp;-</span>
-	</div>
-	<div id="menu-bar">
-		<a class="menu-item" href="{% url "create_posting" %}">create posting</a>
-		{% if perms.postings.add_alert %}
-			<a class="menu-item" href="{% url "create_alert" %}">create alert</a>
+		{% if user.is_authenticated %}
+			<span id="menu-icon" unselectable="on" href="#" onclick="return false;">-&thinsp;menu&thinsp;-</span>
 		{% endif %}
-		<a class="menu-item" href="{% url "logout" %}">log out</a>
+	</div>
+	{% if user.is_authenticated %}
+		<div id="menu-bar">
+			<a class="menu-item" href="{% url "user_detail" pk=user.pk %}"><span class="bold">{{ user.get_full_name }}</span></a>
+			<a class="menu-item" href="{% url "create_posting" %}">create posting</a>
+			{% if perms.postings.add_alert %}
+				<a class="menu-item" href="{% url "create_alert" %}">create alert</a>
+			{% endif %}
+			<a class="menu-item" href="{% url "logout" %}">log out</a>
+	{% endif %}
 	</div>
 	<div id="content">
 		{% block content %}{% endblock %}

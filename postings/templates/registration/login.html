@@ -1,6 +1,7 @@
 {% extends "postings/base.html" %}
 
 {% block content %}
+{% load placeholder %}
 
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
@@ -10,12 +11,10 @@
 	{% csrf_token %}
 
 	<ul>
-    	<li>{{ form.username.label_tag }}</li>
-    	<li>{{ form.username }}</li>
+    	<li>{{ form.username|placeholder:"Username" }}</li>
 	</ul>
 	<ul>
-	    <li>{{ form.password.label_tag }}</li>
-	    <li>{{ form.password }}</li>
+	    <li>{{ form.password|placeholder:"Password" }}</li>
 	</ul>
 
 	<input type="submit" value="login" />

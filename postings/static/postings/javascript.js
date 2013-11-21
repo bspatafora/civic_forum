@@ -2,18 +2,30 @@ $(document).ready(function() {
 
 	$("#menu-bar").hide();
 
-	$("#menu-icon").click(function () {
+	$("#menu-icon").click(function() {
 		$("#menu-bar").toggle();
+	});
+
+	$("#menu-icon").mouseenter(function() {
+		$("#menu-bar").show();
+	});
+
+	$("#menu-bar").mouseleave(function() {
+		$('#menu-bar').hide();
+	});
+
+	$('html').click(function() {
+		$('#menu-bar').hide();
 	});
 
 	$(".comment-reply").hide();
 
-	$(".reply-button").click(function () {
+	$(".reply-button").click(function() {
 		var button = $(this).attr("id").split("-")[1];
 		$("#comment-" + button).show();
 	});
 
-	$(".cancel-button").click(function () {
+	$(".cancel-button").click(function() {
 		var button = $(this).attr("id").split("-")[1];
 		$("#comment-" + button).hide();
 	});

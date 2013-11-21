@@ -47,6 +47,10 @@ ol, ul {
 	border-bottom: 1px solid;
 }
 
+#civically:hover {
+	border-bottom: 3px solid;
+}
+
 #civically:visited {
 	color: #222;
 }
@@ -55,7 +59,9 @@ ol, ul {
 	position: absolute;
 	top: 0.5em;
 	right: 0;
+	padding-bottom: 0.5em;
 	font-size: 1.25em;
+	font-weight: 700;
 	cursor: pointer;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
@@ -64,9 +70,14 @@ ol, ul {
 	user-select: none;
 }
 
+#menu-icon:hover {
+	color: #B50707 !important;
+}
+
 #menu-bar {
 	width: 45em;
-	margin: -2em auto 2em auto;
+	margin: -2em auto 1em auto;
+	padding-bottom: 1em;
 }
 
 .menu-item {
@@ -93,7 +104,7 @@ ol, ul {
 }
 
 #feed-image-container {
-	width: 45em;
+	width: 45.2em;
 	margin-bottom: 1.45em;
 	text-align: justify; /* Automatically space feed images */
 }
