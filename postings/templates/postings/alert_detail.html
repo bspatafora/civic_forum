@@ -18,7 +18,11 @@
 	{% if "delete_alert" in alert_perms %}
 		<li class="reply-delete">
 			<a class="action" href="{% url "update_alert" pk=alert.id %}">update</a>
+			
+			{% comment %}
 			<a class="action" href="{% url "delete_alert" pk=alert.id %}">delete</a>
+			{% endcomment %}
+
 		</li>
 	{% endif %}
 </ul>
@@ -52,10 +56,14 @@
             	<li class="reply-delete">
             		<a class="action reply-button" href="{{ alert.get_absolute_url }}#comment{{ node.id }}">link</a>
             		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
+
+            		{% comment %}
             		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
             		{% if "delete_alertcomment" in comment_perms %}
             			<a class="action" href="{% url "delete_alert_comment" pk=node.id %}">delete</a>
             		{% endif %}
+            		{% endcomment %}
+
             	</li>
             </ul>
 			<form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_alert_comment" %}" method="POST">

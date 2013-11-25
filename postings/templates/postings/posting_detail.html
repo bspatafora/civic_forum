@@ -10,10 +10,14 @@
 <ul>
 	<li>{{ posting.message|linebreaks }}</li>
 	<li class="detail-variety">{{ posting.get_variety_display }}</li><li class="detail-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
+
+    {% comment %}
 	{% get_obj_perms user for posting as "posting_perms" %} {# django-guardian #}
 	{% if "delete_posting" in posting_perms %}
 		<li class="reply-delete"><a class="action" href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
 	{% endif %}
+    {% endcomment %}
+
 </ul>
 
 <h3>Comments</h3>
@@ -46,10 +50,14 @@
             	<li class="reply-delete">
             		<a class="action reply-button" href="{{ posting.get_absolute_url }}#comment{{ node.id }}">link</a>
             		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
+
+                    {% comment %}
             		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
             		{% if "delete_comment" in comment_perms %}
             			<a class="action" href="{% url "delete_comment" pk=node.id %}">delete</a>
             		{% endif %}
+                    {% endcomment %}
+
             	</li>
             </ul>
 			<form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_comment" %}" method="POST">
