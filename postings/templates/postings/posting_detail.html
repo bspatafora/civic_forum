@@ -8,7 +8,7 @@
 <h2>{{ posting }}</h2>
 
 <ul>
-	<li>{{ posting.message|linebreaks }}</li>
+	<li>{{ posting.message|linebreaks|urlize }}</li>
 	<li class="detail-variety">{{ posting.get_variety_display }}</li><li class="detail-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
 
     {% comment %}
@@ -45,7 +45,7 @@
             	{% if node.is_root_node %}
             	    <div class="horizontal_rule_detail"></div>
             	{% endif %}
-            	{{ node.message|linebreaks }}
+            	{{ node.message|linebreaks|urlize }}
             	<li class="detail-byline">{{ node.posted|timesince }} ago by <a href="{% url "user_detail" pk=node.user.pk %}">{{ node.user.get_full_name }}</a></li>
             	<li class="reply-delete">
             		<a class="action reply-button" href="{{ posting.get_absolute_url }}#comment{{ node.id }}">link</a>

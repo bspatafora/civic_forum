@@ -4,15 +4,16 @@ $(document).ready(function() {
 
 	$("#menu-icon").click(function() {
 		$("#menu-bar").toggle();
+		event.stopPropagation();
 	});
 
-	$("#menu-icon").mouseenter(function() {
-		$("#menu-bar").show();
-	});
+	// $("#menu-icon").mouseenter(function() {
+		// $("#menu-bar").show();
+	// });
 
-	$("#menu-bar").mouseleave(function() {
-		$('#menu-bar').hide();
-	});
+	// $("#menu-bar").mouseleave(function() {
+		// $('#menu-bar').hide();
+	// });
 
 	$('html').click(function() {
 		$('#menu-bar').hide();

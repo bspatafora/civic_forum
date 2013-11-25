@@ -111,7 +111,7 @@ class Posting(models.Model):
 
         super(Posting, self).save(*args, **kwargs)
         assign_perm('postings.delete_posting', self.user, self)
-        assign_perm('postings.view_posting', self.user, self)
+        assign_perm('postings.view_posting', self.user, self) # User should not be asked to vote in order to access their own posting
         return
 
 
