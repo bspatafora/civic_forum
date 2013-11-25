@@ -46,6 +46,12 @@ class CreateAlert(LoginRequiredMixin, CreateView):
     form_class = AlertForm
     template_name = 'postings/create_alert.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateAlert, self).get_context_data(**kwargs)
+        a_day_ago = datetime.now() - timedelta(hours=24)
+        context['recent_alerts'] = Alert.objects.filter(user=self.request.user).filter(posted__gte=a_day_ago)
+        return context
+
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.user = self.request.user # Set "user" field
@@ -61,6 +67,12 @@ class CreatePosting(LoginRequiredMixin, CreateView):
 
     form_class = PostingForm
     template_name = 'postings/create_posting.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CreatePosting, self).get_context_data(**kwargs)
+        a_day_ago = datetime.now() - timedelta(hours=24)
+        context['recent_postings'] = Posting.objects.filter(user=self.request.user).filter(posted__gte=a_day_ago)
+        return context
 
     def form_valid(self, form):
         instance = form.save(commit=False)
