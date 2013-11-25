@@ -86,6 +86,10 @@ class AlertDetail(LoginRequiredMixin, DetailView):
     model = Alert
     template_name = 'postings/alert_detail.html'
 
+    def get(self, request, *args, **kwargs):
+        AlertComment.objects.rebuild() # Change this to partial rebuild!
+        return super(AlertDetail, self).get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(AlertDetail, self).get_context_data(**kwargs)
         context['form'] = AlertCommentForm(initial={'alert': self.object}) # Set "alert" field
@@ -96,6 +100,10 @@ class PostingDetail(LoginRequiredMixin, DetailView):
 
     model = Posting
     template_name = 'postings/posting_detail.html'
+
+    def get(self, request, *args, **kwargs):
+        Comment.objects.rebuild() # Change this to partial rebuild!
+        return super(PostingDetail, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(PostingDetail, self).get_context_data(**kwargs)

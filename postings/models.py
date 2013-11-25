@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.utils import timezone
-from datetime import datetime, timedelta
 
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -166,7 +165,7 @@ class AlertComment(MPTTModel):
 
     class MPTTMeta:
 
-        order_insertion_by = ['posted']
+        order_insertion_by = ['-points']
 
     def __unicode__(self):
 
@@ -276,7 +275,7 @@ class AlertCommentForm(ModelForm):
 
     def save(self, *args, **kwargs):
         self.parent = self.cleaned_data['parent'] # Parent ID from hidden field in template
-        AlertComment.objects.rebuild() # Change this to partial rebuild!
+        AlertComment.objects.rebuild() # Change this to partial rebuild! (May be redundant now that rebuild happens in alert/posting detail gets)
         return super(AlertCommentForm, self).save(*args, **kwargs)
 
 
@@ -294,5 +293,5 @@ class CommentForm(ModelForm):
 
     def save(self, *args, **kwargs):
         self.parent = self.cleaned_data['parent'] # Parent ID from hidden field in template
-        Comment.objects.rebuild() # Change this to partial rebuild!
+        Comment.objects.rebuild() # Change this to partial rebuild! (May be redundant now that rebuild happens in alert/posting detail gets)
         return super(CommentForm, self).save(*args, **kwargs)
