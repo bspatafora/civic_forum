@@ -71,7 +71,7 @@ ol, ul {
 }
 
 #menu-icon:hover {
-	color: #B50707 !important;
+	color: #D90707 !important;
 }
 
 #menu-bar {
@@ -90,7 +90,7 @@ ol, ul {
 }
 
 .menu-item:hover {
-	color: #B50707 !important;
+	color: #D90707 !important;
 	border-bottom: none;
 }
 
@@ -111,7 +111,7 @@ ol, ul {
 
 .feed-image {
 	display: inline-block;
-	width: 14.25em;
+	width: 14.5em;
 }
 
 #feed-image-container:after {
@@ -193,7 +193,7 @@ textarea, input {
 
 .horizontal_rule_feed {
 	height: 3.2em;
-	width: 37.1%;
+	width: 30%;
 	margin: -0.7em auto 0 auto;
 	border-top: 1px solid #777777;
 }
@@ -220,7 +220,7 @@ textarea, input {
 .alert-link {
 	font-size: 1.05em;
 	font-style: italic;
-	color: #B50707;
+	color: #D90707;
 }
 
 .vote-message {
@@ -256,15 +256,15 @@ label {
 	margin-bottom: 2.5em;
 	font-size: 1.3em;
 	text-align: right;
-	color: #B50707;
+	color: #D90707;
 }
 
 #more-alerts-link {
-	color: #B50707;
+	color: #D90707;
 }
 
 #more-alerts-link:visited {
-	color: #B50707 !important;
+	color: #D90707 !important;
 }
 
 #next {
@@ -297,7 +297,7 @@ label {
 	margin-bottom: 1.5em;
 	font-size: 1.05em;
 	font-style: italic;
-	color: #B50707;
+	color: #D90707;
 }
 
 .detail-variety {
@@ -326,7 +326,7 @@ label {
 }
 
 .errorlist {
-	color: #B50707;
+	color: #D90707;
 }
 
 #id_title {
