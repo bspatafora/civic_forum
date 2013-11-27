@@ -132,7 +132,7 @@ h2 {
 }
 
 h3 {
-	margin-top: 1.5em;
+	margin-top: 2.75em;
 	margin-bottom: 1em;
 	font-size: 1.75em;
 }
@@ -193,9 +193,9 @@ textarea, input {
 
 .horizontal_rule_feed {
 	height: 3.2em;
-	width: 30%;
+	width: 45%;
 	margin: -0.7em auto 0 auto;
-	border-top: 1px solid #777777;
+	border-top: 1px solid #E2E2E2;
 }
 
 .feed-title {
@@ -221,6 +221,12 @@ textarea, input {
 	font-size: 1.05em;
 	font-style: italic;
 	color: #D90707;
+}
+
+.variety-link {
+	font-size: 1.05em;
+	font-style: italic;
+	color: #777777;
 }
 
 .vote-message {
@@ -355,7 +361,7 @@ label {
 }
 
 .children {
-	border-left: 1px dotted #777777;
+	border-left: 1px dotted #AFAFAF;
 }
 
 .parents {
@@ -363,10 +369,10 @@ label {
 }
 
 .horizontal_rule_detail {
-	height: 1.55em;
+	height: 2.65em;
 	width: 25%;
-	margin: 0 auto;
-	border-top: 4px double #777777;
+	margin: 4.5em auto 0 auto;
+	border-top: 1px solid #E2E2E2;
 }
 
 #footer {

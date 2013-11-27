@@ -31,6 +31,8 @@ $(document).ready(function() {
 		$("#comment-" + button).hide();
 	});
 
+	$(".horizontal_rule_detail:first").hide();
+
 	$("#varieties").hide();
 
 	$("#filter-postings-link").click(function () {

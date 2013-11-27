@@ -55,7 +55,7 @@
 			    {% else %}
 			    	<li class="feed-title"><a class="civically-link" href="{% url "vote" posting_pk=posting.pk %}">{{ posting }}</a></li>
 			    {% endif %}
-			<li class="feed-variety">{{ posting.get_variety_display }}</li><li class="feed-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
+			<li class="feed-variety"><a class="variety-link" href={% if posting.variety == 'co' %}"{% url "community_forum" %}"{% elif posting.variety == 'ev' %}"{% url "events" %}"{% elif posting.variety == 'go' %}"{% url "local_government" %}"{% elif posting.variety == 'po' %}"{% url "political_discussion" %}"{% elif posting.variety == 'vo' %}"{% url "volunteering" %}"{% endif%}>{{ posting.get_variety_display }}</a></li><li class="feed-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
 		</div>
 	{% endfor %}
 </ul>

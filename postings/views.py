@@ -41,6 +41,72 @@ class Alerts(LoginRequiredMixin, ListView):
     paginate_by = 25
 
 
+class CommunityForum(LoginRequiredMixin, ListView):
+
+    template_name = 'postings/variety.html'
+    paginate_by = 25
+
+    def get_queryset(self):
+        return sorted(Posting.objects.all().filter(variety='co'), key=attrgetter('sort_value'), reverse=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(CommunityForum, self).get_context_data(**kwargs)
+        context['variety'] = "Community Forum"
+        return context
+
+
+class Events(LoginRequiredMixin, ListView):
+
+    template_name = 'postings/variety.html'
+    paginate_by = 25
+
+    def get_queryset(self):
+        return sorted(Posting.objects.all().filter(variety='ev'), key=attrgetter('sort_value'), reverse=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(Events, self).get_context_data(**kwargs)
+        context['variety'] = "Events"
+        return context
+
+class LocalGovernment(LoginRequiredMixin, ListView):
+
+    template_name = 'postings/variety.html'
+    paginate_by = 25
+
+    def get_queryset(self):
+        return sorted(Posting.objects.all().filter(variety='go'), key=attrgetter('sort_value'), reverse=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(LocalGovernment, self).get_context_data(**kwargs)
+        context['variety'] = "Local Government"
+        return context
+
+class PoliticalDiscussion(LoginRequiredMixin, ListView):
+
+    template_name = 'postings/variety.html'
+    paginate_by = 25
+
+    def get_queryset(self):
+        return sorted(Posting.objects.all().filter(variety='po'), key=attrgetter('sort_value'), reverse=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(PoliticalDiscussion, self).get_context_data(**kwargs)
+        context['variety'] = "Political Discussion"
+        return context
+
+class Volunteering(LoginRequiredMixin, ListView):
+
+    template_name = 'postings/variety.html'
+    paginate_by = 25
+
+    def get_queryset(self):
+        return sorted(Posting.objects.all().filter(variety='vo'), key=attrgetter('sort_value'), reverse=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(Volunteering, self).get_context_data(**kwargs)
+        context['variety'] = "Volunteering"
+        return context
+
 class CreateAlert(LoginRequiredMixin, CreateView):
 
     form_class = AlertForm
@@ -108,7 +174,6 @@ class PostingDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(PostingDetail, self).get_context_data(**kwargs)
         context['form'] = CommentForm(initial={'posting': self.object}) # Set "posting" field
-        # context['comment_set'] = sorted(self.object.comment_set.all(), key=attrgetter('sort_value'), reverse=True)
         return context
 
     # Allow user to view posting only if they have already cast a vote on some random, recent item
