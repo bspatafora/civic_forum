@@ -9,7 +9,7 @@
 		<div>
 			<li class="feed-title">
 				{% if submission.content_type %}
-				    <span class="vote-message">{{ person.first_name }} voted to see more content like this: <br></span>
+				    <span class="user-vote-message">{{ person.first_name }} voted to see more content like this: <br></span>
 				{% endif %}
 				<a class="civically-link" 
 				    {% if submission.title %} {# Posting/Alert #}

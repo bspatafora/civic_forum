@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<p>You just selected a posting. To view it, vote on the randomly selected {% if item.title %}posting{% else %}comment{% endif %} below.</p>
+<p class="site-message">You just selected a posting. To view it, first vote on this randomly selected {% if item.title %}posting{% else %}comment{% endif %}:</p>
 
 <div id="item">
 	{% if item.title %}
@@ -15,7 +15,7 @@
 <form action="{% url "cast_vote" posting_pk=access_to.id item_type=item_type item_pk=item_pk %}" method="POST">
 	{% csrf_token %}
 	<ul class="form_questions">
-		<p>Do you think it would be good for the community if there were more {% if item.title %}posting{% else %}comment{% endif %}s like this?</p>
+		<p class="bold">Do you think it would be good for the community if there were more {% if item.title %}posting{% else %}comment{% endif %}s like this?</p>
 		{{ form.more_like_this.errors }}
 		{{ form.more_like_this }}
 	</ul>

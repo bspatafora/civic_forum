@@ -132,9 +132,9 @@ h2 {
 }
 
 h3 {
-	margin-top: 2.75em;
-	margin-bottom: 1em;
-	font-size: 1.75em;
+	margin-top: 2.25em;
+	margin-bottom: 0.5em;
+	font-size: 1.95em;
 }
 
 p {
@@ -171,6 +171,11 @@ textarea, input {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+}
+
+.site-message {
+	color: #D96D07;
+	font-weight: 700;
 }
 
 .detail-textarea {
@@ -229,7 +234,7 @@ textarea, input {
 	color: #777777;
 }
 
-.vote-message {
+.user-vote-message {
 	font-size: 0.625em;
 }
 
