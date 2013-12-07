@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm, Textarea, HiddenInput, RadioSelect
+from django.forms import ModelForm, Form, Textarea, HiddenInput, RadioSelect, ChoiceField
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -225,6 +225,11 @@ class Comment(MPTTModel):
         return
 
 
+class Digest(models.Model):
+
+    user = models.ForeignKey(User)
+
+
 class AlertForm(ModelForm):
 
     class Meta:
@@ -295,3 +300,16 @@ class CommentForm(ModelForm):
         self.parent = self.cleaned_data['parent'] # Parent ID from hidden field in template
         Comment.objects.rebuild() # Change this to partial rebuild! (May be redundant now that rebuild happens in alert/posting detail gets)
         return super(CommentForm, self).save(*args, **kwargs)
+
+
+class PreferencesForm(Form):
+
+    yes_no = (
+        ('ys', 'yes'),
+        ('no', 'no'),
+    )
+
+    digest = ChoiceField(
+        choices=yes_no,
+        widget=RadioSelect
+    )

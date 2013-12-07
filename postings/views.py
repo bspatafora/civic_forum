@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, FormView
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
@@ -11,7 +11,7 @@ import random
 
 from guardian.decorators import permission_required_or_403
 
-from postings.models import Alert, Posting, Vote, AlertComment, Comment, AlertForm, PostingForm, VoteForm, AlertCommentForm, CommentForm
+from postings.models import Alert, Posting, Vote, AlertComment, Comment, AlertForm, PostingForm, VoteForm, AlertCommentForm, CommentForm, Digest, PreferencesForm
 
 
 class LoginRequiredMixin(object):
@@ -342,3 +342,21 @@ class DeleteComment(LoginRequiredMixin, DeleteView):
     @method_decorator(permission_required_or_403('postings.delete_comment', (Comment, 'pk', 'pk')))
     def dispatch(self, request, *args, **kwargs):
         return super(DeleteComment, self).dispatch(request, *args, **kwargs)
+
+
+class Preferences(LoginRequiredMixin, FormView):
+
+    template_name = 'preferences.html'
+    form_class = PreferencesForm
+    success_url = 'preferences'
+
+    def form_valid(self, form):
+
+        if Digest.objects.filter(user=self.request.user).exists():
+            if form.cleaned_data['digest'] == 'no':
+                Digest.objects.get(user=self.request.user).delete()
+        else:
+            if form.cleaned_data['digest'] == 'ys':
+                d = Digest(user=self.request.user)
+                d.save()
+        return super(Preferences, self).form_valid(form)

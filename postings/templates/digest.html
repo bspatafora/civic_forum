@@ -1,0 +1,23 @@
+<p style="font-family: Georgia, serif; font-size: 20px; color: #222">Here&rsquo;s a sampling of what&rsquo;s been happening in the community these past few days:</p>
+
+<ul>
+	{% for alert in alerts %}
+		<div>
+			<li style="list-style: none; font-family: Georgia, serif; font-size: 20px; line-height: 140%; margin-bottom: 18px">-<a style="margin: 0 8px; text-decoration: none; color: #194E9B; border-bottom: 1px dotted" href="{{ alert.get_absolute_url }}">{{ alert }}</a><span style="font-size: 13px; color: #222">[<span style="color: #D90707; font-style: italic">alert</span>]</span></li>
+		</div>
+	{% endfor %}
+</ul>
+
+<ul>
+	{% load guardian_tags %}
+	{% for posting in postings %}
+		<div>
+			{% get_obj_perms user for posting as "posting_perms" %}
+                {% if "view_posting" in posting_perms %}
+					<li style="list-style: none; font-family: Georgia, serif; font-size: 20px; line-height: 140%; margin-bottom: 18px">-<a style="margin: 0 8px; text-decoration: none; color: #194E9B; border-bottom: 1px dotted" href="{{ posting.get_absolute_url }}">{{ posting }}</a><span style="font-size: 13px; color: #222">[<span style="color: #777777; font-style: italic">{{ posting.get_variety_display }}</span>]</span></li>
+			    {% else %}
+			    	<li style="list-style: none; font-family: Georgia, serif; font-size: 20px; line-height: 140%; margin-bottom: 18px">-<a style="margin: 0 8px; text-decoration: none; color: #194E9B; border-bottom: 1px dotted" href="{% url "vote" posting_pk=posting.pk %}">{{ posting }}</a><span style="font-size: 13px; color: #222">[<span style="color: #777777; font-style: italic">{{ posting.get_variety_display }}</span>]</span></li>
+			    {% endif %}
+		</div>
+	{% endfor %}
+</ul>

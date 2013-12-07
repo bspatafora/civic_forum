@@ -1,0 +1,16 @@
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+<form action="{% url "preferences" %}" method="POST">
+	{% csrf_token %}
+	<ul class="form_questions">
+		{{ form.digest.errors }}
+		<p class="bold">Receive digest?</p>
+		{{ form.digest }}
+	</ul>
+	<input type="submit" value="Save" />
+	<a class="cancel-button" href="{% url "feed" %}">cancel</a>
+</form>
+
+{% endblock %}

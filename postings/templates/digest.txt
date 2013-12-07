@@ -1,0 +1,10 @@
+Here's a sampling of what's been happening in the community these past few days:
+
+	{% for alert in alerts %}
+		- {{ alert.title }} [ALERT] ({{ alert.get_absolute_url }})
+
+	{% endfor %}
+	{% for posting in postings %}
+		- {{ posting.title }} [{{ posting.get_variety_display }}] ({{ posting.get_absolute_url }})
+
+	{% endfor %}
