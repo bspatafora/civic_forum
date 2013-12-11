@@ -348,10 +348,16 @@ class Preferences(LoginRequiredMixin, FormView):
 
     template_name = 'preferences.html'
     form_class = PreferencesForm
-    success_url = 'preferences'
+
+    def get_initial(self):
+        if Digest.objects.filter(user=self.request.user).exists():
+            initial = {'digest': 'ys'}
+        else:
+            initial = {'digest': 'no'}
+
+        return initial
 
     def form_valid(self, form):
-
         if Digest.objects.filter(user=self.request.user).exists():
             if form.cleaned_data['digest'] == 'no':
                 Digest.objects.get(user=self.request.user).delete()
@@ -360,3 +366,33 @@ class Preferences(LoginRequiredMixin, FormView):
                 d = Digest(user=self.request.user)
                 d.save()
         return super(Preferences, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('preferences_saved')
+
+
+class PreferencesSaved(LoginRequiredMixin, FormView):
+
+    template_name = 'preferences_saved.html'
+    form_class = PreferencesForm
+
+    def get_initial(self):
+        if Digest.objects.filter(user=self.request.user).exists():
+            initial = {'digest': 'ys'}
+        else:
+            initial = {'digest': 'no'}
+
+        return initial
+
+    def form_valid(self, form):
+        if Digest.objects.filter(user=self.request.user).exists():
+            if form.cleaned_data['digest'] == 'no':
+                Digest.objects.get(user=self.request.user).delete()
+        else:
+            if form.cleaned_data['digest'] == 'ys':
+                d = Digest(user=self.request.user)
+                d.save()
+        return super(Preferences, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('preferences_saved')
