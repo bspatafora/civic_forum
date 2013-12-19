@@ -1,14 +1,12 @@
-from django.db import models
-from django.forms import ModelForm, Form, Textarea, HiddenInput, RadioSelect, ChoiceField
-from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
+from django.db import models
 from django.utils import timezone
 
-from mptt.models import MPTTModel, TreeForeignKey
-
 from guardian.shortcuts import assign_perm
+from mptt.models import MPTTModel, TreeForeignKey
 
 
 class Alert(models.Model):
@@ -19,7 +17,7 @@ class Alert(models.Model):
     message = models.CharField(
         max_length=10000,
     )
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     posted = models.DateTimeField(
         auto_now_add=True,
     )
@@ -28,24 +26,18 @@ class Alert(models.Model):
     )
 
     class Meta:
-
         ordering = ['-updated']
 
     def __unicode__(self):
-
         return self.title
 
     def get_absolute_url(self):
-
         return reverse('alert_detail', kwargs={'pk': self.id})
 
     def save(self, *args, **kwargs):
-
         is_create = False
-
         if not self.id:
             is_create = True
-
         super(Alert, self).save(*args, **kwargs)
         if is_create:
             assign_perm('postings.delete_alert', self.user, self)
@@ -69,7 +61,7 @@ class Posting(models.Model):
     message = models.CharField(
         max_length=10000,
     )
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     posted = models.DateTimeField(
         auto_now_add=True,
     )
@@ -80,38 +72,34 @@ class Posting(models.Model):
         max_length=2,
         choices=varieties,
         blank=False,
-        default='community'
+        default=''
     )
 
     def get_sort_value(self):
         time_since = timezone.now() - self.posted
         hours = float((time_since.days * 24) + (time_since.seconds / 3600))
         if hours == 0:
-            hours = 1 # Never divide by zero!
+            hours = 1  # Never divide by zero!
         return self.points / hours**2
 
     sort_value = property(get_sort_value)
 
     class Meta:
-
         ordering = ['-posted']
         permissions = (
             ('view_posting', 'View posting'),
         )
 
     def __unicode__(self):
-
         return self.title
 
     def get_absolute_url(self):
-
         return reverse('posting_detail', kwargs={'pk': self.id})
 
     def save(self, *args, **kwargs):
-
         super(Posting, self).save(*args, **kwargs)
         assign_perm('postings.delete_posting', self.user, self)
-        assign_perm('postings.view_posting', self.user, self) # User should not be asked to vote in order to access their own posting
+        assign_perm('postings.view_posting', self.user, self)
         return
 
 
@@ -126,7 +114,7 @@ class Vote(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey()
     access_to = models.ForeignKey(Posting)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     posted = models.DateTimeField(
         auto_now_add=True,
     )
@@ -138,24 +126,23 @@ class Vote(models.Model):
     )
 
     def __unicode__(self):
-
         return self.content_object
 
     def save(self, *args, **kwargs):
-
         super(Vote, self).save(*args, **kwargs)
         assign_perm('postings.view_posting', self.user, self.access_to)
         return
 
 
-class AlertComment(MPTTModel):
+class Comment(MPTTModel):
 
-    alert = models.ForeignKey(Alert)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+    parent = TreeForeignKey(
+        'self', null=True, blank=True, related_name='children',
+    )
     message = models.CharField(
         max_length=10000,
     )
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     posted = models.DateTimeField(
         auto_now_add=True,
     )
@@ -163,153 +150,42 @@ class AlertComment(MPTTModel):
         default=1,
     )
 
-    class MPTTMeta:
+    class Meta:
+        abstract = True
 
+    class MPTTMeta:
         order_insertion_by = ['-points']
 
     def __unicode__(self):
-
         return self.message[:139]
 
-    def get_absolute_url(self):
 
+class AlertComment(Comment):
+
+    alert = models.ForeignKey(Alert)
+
+    def get_absolute_url(self):
         return reverse('alert_detail', kwargs={'pk': self.alert.id})
 
     def save(self, *args, **kwargs):
-
         super(AlertComment, self).save(*args, **kwargs)
         assign_perm('postings.delete_alertcomment', self.user, self)
         return
 
 
-class Comment(MPTTModel):
+class PostingComment(Comment):
 
     posting = models.ForeignKey(Posting)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
-    message = models.CharField(
-        max_length=10000,
-    )
-    user = models.ForeignKey(User)
-    posted = models.DateTimeField(
-        auto_now_add=True,
-    )
-    points = models.IntegerField(
-        default=1,
-    )
-
-    def get_sort_value(self):
-        time_since = timezone.now() - self.posted
-        hours = float((time_since.days * 24) + (time_since.seconds / 3600))
-        if hours == 0:
-            hours = 1 # Never divide by zero!
-        return self.points / hours**2
-
-    sort_value = property(get_sort_value)
-
-    class MPTTMeta:
-
-        order_insertion_by = ['-points']
-
-    def __unicode__(self):
-
-        return self.message[:139]
 
     def get_absolute_url(self):
-
         return reverse('posting_detail', kwargs={'pk': self.posting.id})
 
     def save(self, *args, **kwargs):
-
-        super(Comment, self).save(*args, **kwargs)
-        assign_perm('postings.delete_comment', self.user, self)
+        super(PostingComment, self).save(*args, **kwargs)
+        assign_perm('postings.delete_postingcomment', self.user, self)
         return
 
 
 class Digest(models.Model):
 
-    user = models.ForeignKey(User)
-
-
-class AlertForm(ModelForm):
-
-    class Meta:
-
-        model = Alert
-        widgets = {
-            'title': Textarea(attrs={'cols': 75, 'rows': 5}),
-            'message': Textarea(attrs={'cols': 75, 'rows': 15}),
-        }
-        fields = ('title', 'message')
-
-
-class PostingForm(ModelForm):
-
-    class Meta:
-
-        model = Posting
-        widgets = {
-            'title': Textarea(attrs={'cols': 75, 'rows': 5}),
-            'message': Textarea(attrs={'cols': 75, 'rows': 15}),
-            'variety': RadioSelect,
-        }
-        fields = ('title', 'message', 'variety')
-
-
-class VoteForm(ModelForm):
-
-    class Meta:
-
-        model = Vote
-        widgets = {
-            'more_like_this': RadioSelect,
-        }
-        fields = ('more_like_this',)
-
-
-class AlertCommentForm(ModelForm):
-
-    class Meta:
-        
-        model = AlertComment
-        widgets = {
-            'message': Textarea(attrs={'cols': 75, 'rows': 15}),
-            'alert': HiddenInput,
-            'parent': HiddenInput,
-        }
-        fields = ('message', 'alert', 'parent')
-
-    def save(self, *args, **kwargs):
-        self.parent = self.cleaned_data['parent'] # Parent ID from hidden field in template
-        AlertComment.objects.rebuild() # Change this to partial rebuild! (May be redundant now that rebuild happens in alert/posting detail gets)
-        return super(AlertCommentForm, self).save(*args, **kwargs)
-
-
-class CommentForm(ModelForm):
-
-    class Meta:
-        
-        model = Comment
-        widgets = {
-            'message': Textarea(attrs={'cols': 75, 'rows': 15}),
-            'posting': HiddenInput,
-            'parent': HiddenInput,
-        }
-        fields = ('message', 'posting', 'parent')
-
-    def save(self, *args, **kwargs):
-        self.parent = self.cleaned_data['parent'] # Parent ID from hidden field in template
-        Comment.objects.rebuild() # Change this to partial rebuild! (May be redundant now that rebuild happens in alert/posting detail gets)
-        return super(CommentForm, self).save(*args, **kwargs)
-
-
-class PreferencesForm(Form):
-
-    yes_no = (
-        ('ys', 'yes'),
-        ('no', 'no'),
-    )
-
-    digest = ChoiceField(
-        choices=yes_no,
-        widget=RadioSelect
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)

@@ -6,67 +6,67 @@
 
 {% load staticfiles %}
 <div id="feed-image-container">
-	<img class="feed-image" src="{% static "postings/images/leaves.jpg" %}" alt="Leaves">
-	<img class="feed-image" src="{% static "postings/images/memorial_hall.jpg" %}" alt="Memorial Hall">
-	<img class="feed-image" src="{% static "postings/images/fountain.jpg" %}" alt="Fountain">
+    <img class="feed-image" src="{% static "postings/images/leaves.jpg" %}" alt="Leaves">
+    <img class="feed-image" src="{% static "postings/images/memorial_hall.jpg" %}" alt="Memorial Hall">
+    <img class="feed-image" src="{% static "postings/images/fountain.jpg" %}" alt="Fountain">
 </div>
 
 <ul>
-	{% for alert in alerts %}
-		<div>
-			<li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
-			{% if alert.posted|timesince != alert.updated|timesince %}
-				<li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
-			{% else %}
-				<li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="feed-byline">{{ alert.posted|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
-			{% endif %}
-		</div>
-	{% endfor %}
+    {% for alert in alerts %}
+        <div>
+            <li class="feed-title"><a class="civically-link" href="{{ alert.get_absolute_url }}">{{ alert }}</a></li>
+            {% if alert.posted|timesince != alert.updated|timesince %}
+                <li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="feed-byline">updated {{ alert.updated|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
+            {% else %}
+                <li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="feed-byline">{{ alert.posted|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
+            {% endif %}
+        </div>
+    {% endfor %}
 </ul>
 
 <div class="horizontal_rule_feed"></div>
 
 <!--
 <ul>
-	<li id="filter-postings">
-		<a id="filter-postings-link" class="civically-link" href="#" onclick="return false;">filter postings &darr;</a>
-	</li>
-	<li id="more-alerts">
-		<a id="more-alerts-link" class="civically-link" href="{% url "alerts" %}">view more alerts &rarr;</a>
-	</li>
+    <li id="filter-postings">
+        <a id="filter-postings-link" class="civically-link" href="#" onclick="return false;">filter postings &darr;</a>
+    </li>
+    <li id="more-alerts">
+        <a id="more-alerts-link" class="civically-link" href="{% url "alerts" %}">view more alerts &rarr;</a>
+    </li>
 </ul>
 
 
 <form id="varieties">
-	<label><input id="community-box" type="checkbox" checked>community forum</label>
-	<label><input id="events-box" type="checkbox" checked>events</label>
-	<label><input id="government-box" type="checkbox" checked>local government</label>
-	<label><input id="politics-box" type="checkbox" checked>political discussion</label>
-	<label><input id="volunteering-box" type="checkbox" checked>volunteering</label>
+    <label><input id="community-box" type="checkbox" checked>community forum</label>
+    <label><input id="events-box" type="checkbox" checked>events</label>
+    <label><input id="government-box" type="checkbox" checked>local government</label>
+    <label><input id="politics-box" type="checkbox" checked>political discussion</label>
+    <label><input id="volunteering-box" type="checkbox" checked>volunteering</label>
 </form>
 -->
 
 <ul>
-	{% for posting in object_list %}
-		<div class="feed-{{ posting.variety }}">
-			{% get_obj_perms user for posting as "posting_perms" %}
+    {% for posting in object_list %}
+        <div class="feed-{{ posting.variety }}">
+            {% get_obj_perms user for posting as "posting_perms" %}
                 {% if "view_posting" in posting_perms %}
-					<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
-			    {% else %}
-			    	<li class="feed-title"><a class="civically-link" href="{% url "vote" posting_pk=posting.pk %}">{{ posting }}</a></li>
-			    {% endif %}
-			<li class="feed-variety"><a class="variety-link" href={% if posting.variety == 'co' %}"{% url "community_forum" %}"{% elif posting.variety == 'ev' %}"{% url "events" %}"{% elif posting.variety == 'go' %}"{% url "local_government" %}"{% elif posting.variety == 'po' %}"{% url "political_discussion" %}"{% elif posting.variety == 'vo' %}"{% url "volunteering" %}"{% endif%}>{{ posting.get_variety_display }}</a></li><li class="feed-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
-		</div>
-	{% endfor %}
+                    <li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
+                {% else %}
+                    <li class="feed-title"><a class="civically-link" href="{% url "vote" posting_pk=posting.pk %}">{{ posting }}</a></li>
+                {% endif %}
+            <li class="feed-variety"><a class="variety-link" href={% if posting.variety == 'co' %}"{% url "community_forum" %}"{% elif posting.variety == 'ev' %}"{% url "events" %}"{% elif posting.variety == 'go' %}"{% url "local_government" %}"{% elif posting.variety == 'po' %}"{% url "political_discussion" %}"{% elif posting.variety == 'vo' %}"{% url "volunteering" %}"{% endif%}>{{ posting.get_variety_display }}</a></li><li class="feed-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
+        </div>
+    {% endfor %}
 </ul>
 
 <div class="pagination">
-	{% if page_obj.has_previous %}
-		<a id="previous" href="?page={{ page_obj.previous_page_number }}">&larr; previous</a>
-	{% endif %}
-	{% if page_obj.has_next %}
-		<a id="next" href="?page={{ page_obj.next_page_number }}">next &rarr;</a>
-	{% endif %}
+    {% if page_obj.has_previous %}
+        <a id="previous" href="?page={{ page_obj.previous_page_number }}">&larr; previous</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+        <a id="next" href="?page={{ page_obj.next_page_number }}">next &rarr;</a>
+    {% endif %}
 </div>
 
 {% endblock %}

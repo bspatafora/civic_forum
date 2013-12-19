@@ -7,9 +7,9 @@
 <p>{{ alertcomment.message }}</p>
 
 <form action="{% url "delete_alert_comment" pk=alertcomment.id %}" method="POST">
-	{% csrf_token %}
-	<input type="submit" value="Delete" />
-	<a href="{% url "alert_detail" pk=alertcomment.alert.id %}">cancel</a>
+    {% csrf_token %}
+    <input type="submit" value="Delete" />
+    <a href="{% url "alert_detail" pk=alertcomment.alert.id %}">cancel</a>
 </form>
 
 {% endblock %}

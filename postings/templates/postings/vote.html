@@ -5,22 +5,22 @@
 <p class="site-message">You just selected a posting. To view it, take a moment to read and vote on this randomly selected {% if item.title %}posting{% else %}comment{% endif %}:</p>
 
 <div id="item">
-	{% if item.title %}
-		<h2>{{ item }}</h2>
-	{% endif %}
+    {% if item.title %}
+        <h2>{{ item }}</h2>
+    {% endif %}
 
-	<p>{{ item.message|linebreaks }}</p>
+    <p>{{ item.message|linebreaks }}</p>
 </div>
 
 <form action="{% url "cast_vote" posting_pk=access_to.id item_type=item_type item_pk=item_pk %}" method="POST">
-	{% csrf_token %}
-	<ul class="form_questions">
-		<p class="bold">Do you think it would be good for the community if there were more {% if item.title %}posting{% else %}comment{% endif %}s like this?</p>
-		{{ form.more_like_this.errors }}
-		{{ form.more_like_this }}
-	</ul>
-	<input type="submit" value="Cast vote" />
-	<a class="cancel-button" href="{% url "feed" %}">cancel</a>
+    {% csrf_token %}
+    <ul class="form_questions">
+        <p class="bold">Do you think it would be good for the community if there were more {% if item.title %}posting{% else %}comment{% endif %}s like this?</p>
+        {{ form.more_like_this.errors }}
+        {{ form.more_like_this }}
+    </ul>
+    <input type="submit" value="Cast vote" />
+    <a class="cancel-button" href="{% url "feed" %}">cancel</a>
 </form>
 
 {% endblock %}

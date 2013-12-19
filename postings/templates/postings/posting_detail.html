@@ -8,69 +8,69 @@
 <h2>{{ posting }}</h2>
 
 <ul>
-	<li>{{ posting.message|linebreaks|urlize }}</li>
-	<li class="detail-variety">{{ posting.get_variety_display }}</li><li class="detail-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
+    <li>{{ posting.message|linebreaks|urlize }}</li>
+    <li class="detail-variety">{{ posting.get_variety_display }}</li><li class="detail-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
 
     {% comment %}
-	{% get_obj_perms user for posting as "posting_perms" %} {# django-guardian #}
-	{% if "delete_posting" in posting_perms %}
-		<li class="reply-delete"><a class="action" href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
-	{% endif %}
+    {% get_obj_perms user for posting as "posting_perms" %} {# django-guardian #}
+    {% if "delete_posting" in posting_perms %}
+        <li class="reply-delete"><a class="action" href="{% url "delete_posting" pk=posting.id %}">delete</a></li>
+    {% endif %}
     {% endcomment %}
 
 </ul>
 
 <h3>Comments</h3>
 
-<form action="{% url "create_comment" %}" method="POST">
-	{% csrf_token %}
-	<ul class="detail-textarea">
-		{{ form.message|placeholder:"Have a question? Got something to contribute? Type here to reply to the above posting." }}
-		{{ form.posting }}
-	</ul>
-	<input type="submit" value="Post" />
+<form action="{% url "create_posting_comment" %}" method="POST">
+    {% csrf_token %}
+    <ul class="detail-textarea">
+        {{ form.message|placeholder:"Have a question? Got something to contribute? Type here to reply to the above posting." }}
+        {{ form.posting }}
+    </ul>
+    <input type="submit" value="Post" />
 </form>
 
-{% if posting.comment_set.all|length == 0 %}
+{% if posting.postingcomment_set.all|length == 0 %}
     <p class="no-comments">It doesn&rsquo;t look like anyone has commented on this posting yet.</p>
 {% endif %}
 
 {% load mptt_tags %}
-{% with comments=posting.comment_set.all %}
+{% with comments=posting.postingcomment_set.all %}
 <ul class="root">
     {% recursetree comments %}
         <li {% if node.is_child_node %}style="padding-left: 2.25em"{% endif %}>
             <ul id="comment{{ node.id }}" {% if node.is_root_node %}class="comment parents"{% else %}class="comment"{% endif %}>
-            	{% if node.is_root_node %}
-            	    <div class="horizontal_rule_detail"></div>
-            	{% endif %}
-            	{{ node.message|linebreaks|urlize }}
-            	<li class="detail-byline">{{ node.posted|timesince }} ago by <a href="{% url "user_detail" pk=node.user.pk %}">{{ node.user.get_full_name }}</a></li>
-            	<li class="reply-delete">
-            		<a class="action reply-button" href="{{ posting.get_absolute_url }}#comment{{ node.id }}">link</a>
-            		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
+                {% if node.is_root_node %}
+                    <div class="horizontal_rule_detail"></div>
+                {% endif %}
+                {{ node.message|linebreaks|urlize }}
+                <li class="detail-byline">{{ node.posted|timesince }} ago by <a href="{% url "user_detail" pk=node.user.pk %}">{{ node.user.get_full_name }}</a></li>
+                <li class="reply-delete">
+                    <a class="action reply-button" href="{{ posting.get_absolute_url }}#comment{{ node.id }}">link</a>
+                    <a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
 
                     {% comment %}
-            		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
-            		{% if "delete_comment" in comment_perms %}
-            			<a class="action" href="{% url "delete_comment" pk=node.id %}">delete</a>
-            		{% endif %}
+                    {% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
+                    {% if "delete_posting_comment" in comment_perms %}
+                        <a class="action" href="{% url "delete_posting_comment" pk=node.id %}">delete</a>
+                    {% endif %}
                     {% endcomment %}
 
-            	</li>
+                </li>
             </ul>
-			<form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_comment" %}" method="POST">
-				{% csrf_token %}
-				<ul class="detail-textarea">
-					{{ form.message|placeholder:"Type here to reply to the above comment." }}
-					{{ form.posting }} {# To allow for redirect #}
-				</ul>
-				{% if node.id %}    
-					<input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" /> {# Used by CommentForm to set "parent" field #}
-				{% endif %}
-				<input type="submit" value="Post" />
-				<a id="cancel-{{ node.id }}" class="action cancel-button" href="#" onclick="return false;">cancel</a>
-			</form>
+            <form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_posting_comment" %}" method="POST">
+                {% csrf_token %}
+                <ul class="detail-textarea">
+                    {{ form.message|placeholder:"Type here to reply to the above comment." }}
+                    {{ form.posting }} {# To allow for redirect #}
+                </ul>
+                {% if node.id %}    
+                    <input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" /> {# Used by PostingCommentForm to set "parent" field #}
+                {% endif %}
+                <input type="submit" value="Post" />
+                <a id="cancel-{{ node.id }}" class="action cancel-button" href="#" onclick="return false;">cancel</a>
+            </form>
             {% if not node.is_leaf_node %}
                 <ul class="children">
                     {{ children }}

@@ -8,19 +8,19 @@
 {% else %}
     <h2>New posting</h2>
 
-	<form action="{% url "create_posting" %}" method="POST">
-		{% csrf_token %}
-		<ul class="form_questions">
-			{{ form.title.errors }}
-			{{ form.title|placeholder:"Title" }}
-			{{ form.message.errors }}
-			{{ form.message|placeholder:"Message" }}
-			{{ form.variety.errors }}
-			{{ form.variety }}
-		</ul>
-		<input type="submit" value="Post" />
-		<a class="cancel-button" href="{% url "feed" %}">cancel</a>
-	</form>
+    <form action="{% url "create_posting" %}" method="POST">
+        {% csrf_token %}
+        <ul class="form_questions">
+            {{ form.title.errors }}
+            {{ form.title|placeholder:"Title" }}
+            {{ form.message.errors }}
+            {{ form.message|placeholder:"Message" }}
+            {{ form.variety.errors }}
+            {{ form.variety }}
+        </ul>
+        <input type="submit" value="Post" />
+        <a class="cancel-button" href="{% url "feed" %}">cancel</a>
+    </form>
 {% endif %}
 
 {% endblock %}

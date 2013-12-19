@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from postings import views
+from . import views
+
 
 urlpatterns = patterns('',
     url(r'^$', views.Feed.as_view(),
@@ -44,10 +45,10 @@ urlpatterns = patterns('',
         # name='delete_posting',),
     url(r'^create_alert_comment$', views.CreateAlertComment.as_view(),
         name='create_alert_comment',),
-    url(r'^create_comment$', views.CreateComment.as_view(),
-        name='create_comment',),
+    url(r'^create_posting_comment$', views.CreatePostingComment.as_view(),
+        name='create_posting_comment',),
     # url(r'^delete_alert_comment/(?P<pk>\d+)$', views.DeleteAlertComment.as_view(),
         # name='delete_alert_comment',),
-    # url(r'^delete_comment/(?P<pk>\d+)$', views.DeleteComment.as_view(),
-        # name='delete_comment',),
+    # url(r'^delete_posting_comment/(?P<pk>\d+)$', views.DeletePostingComment.as_view(),
+        # name='delete_posting_comment',),
 )

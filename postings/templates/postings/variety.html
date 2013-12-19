@@ -7,26 +7,26 @@
 <h1>{{ variety }}</h1>
 
 <ul>
-	{% for posting in object_list %}
-		<div>
-			{% get_obj_perms user for posting as "posting_perms" %}
+    {% for posting in object_list %}
+        <div>
+            {% get_obj_perms user for posting as "posting_perms" %}
                 {% if "view_posting" in posting_perms %}
-					<li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
-			    {% else %}
-			    	<li class="feed-title"><a class="civically-link" href="{% url "vote" posting_pk=posting.pk %}">{{ posting }}</a></li>
-			    {% endif %}
-			<li class="feed-variety">{{ posting.get_variety_display }}</li><li class="feed-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
-		</div>
-	{% endfor %}
+                    <li class="feed-title"><a class="civically-link" href="{{ posting.get_absolute_url }}">{{ posting }}</a></li>
+                {% else %}
+                    <li class="feed-title"><a class="civically-link" href="{% url "vote" posting_pk=posting.pk %}">{{ posting }}</a></li>
+                {% endif %}
+            <li class="feed-variety">{{ posting.get_variety_display }}</li><li class="feed-byline">{{ posting.posted|timesince }} ago by <a href="{% url "user_detail" pk=posting.user.pk %}">{{ posting.user.get_full_name }}</a></li>
+        </div>
+    {% endfor %}
 </ul>
 
 <div class="pagination">
-	{% if page_obj.has_previous %}
-		<a id="previous" href="?page={{ page_obj.previous_page_number }}">&larr; previous</a>
-	{% endif %}
-	{% if page_obj.has_next %}
-		<a id="next" href="?page={{ page_obj.next_page_number }}">next &rarr;</a>
-	{% endif %}
+    {% if page_obj.has_previous %}
+        <a id="previous" href="?page={{ page_obj.previous_page_number }}">&larr; previous</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+        <a id="next" href="?page={{ page_obj.next_page_number }}">next &rarr;</a>
+    {% endif %}
 </div>
 
 {% endblock %}

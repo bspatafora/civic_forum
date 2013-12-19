@@ -8,34 +8,34 @@
 <h2>{{ alert }}</h2>
 
 <ul>
-	<li>{{ alert.message|linebreaks|urlize }}</li>
-	{% if alert.posted|timesince != alert.updated|timesince %}
-		<li class="detail-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="detail-byline">updated {{ alert.updated|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
-	{% else %}
-		<li class="detail-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="detail-byline">{{ alert.posted|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
-	{% endif %}
-	{% get_obj_perms user for alert as "alert_perms" %} {# django-guardian #}
-	{% if "delete_alert" in alert_perms %}
-		<li class="reply-delete">
-			<a class="action" href="{% url "update_alert" pk=alert.id %}">update</a>
-			
-			{% comment %}
-			<a class="action" href="{% url "delete_alert" pk=alert.id %}">delete</a>
-			{% endcomment %}
+    <li>{{ alert.message|linebreaks|urlize }}</li>
+    {% if alert.posted|timesince != alert.updated|timesince %}
+        <li class="detail-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="detail-byline">updated {{ alert.updated|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
+    {% else %}
+        <li class="detail-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li><li class="detail-byline">{{ alert.posted|timesince }} ago by <a href="{% url "user_detail" pk=alert.user.pk %}">{{ alert.user.get_full_name }}</a></li>
+    {% endif %}
+    {% get_obj_perms user for alert as "alert_perms" %} {# django-guardian #}
+    {% if "delete_alert" in alert_perms %}
+        <li class="reply-delete">
+            <a class="action" href="{% url "update_alert" pk=alert.id %}">update</a>
+            
+            {% comment %}
+            <a class="action" href="{% url "delete_alert" pk=alert.id %}">delete</a>
+            {% endcomment %}
 
-		</li>
-	{% endif %}
+        </li>
+    {% endif %}
 </ul>
 
 <h3>Comments</h3>
 
 <form action="{% url "create_alert_comment" %}" method="POST">
-	{% csrf_token %}
-	<ul class="detail-textarea">
-		{{ form.message|placeholder:"Have a question? Got something to contribute? Type here to reply to the above alert." }}
-		{{ form.alert }}
-	</ul>
-	<input type="submit" value="Post" />
+    {% csrf_token %}
+    <ul class="detail-textarea">
+        {{ form.message|placeholder:"Have a question? Got something to contribute? Type here to reply to the above alert." }}
+        {{ form.alert }}
+    </ul>
+    <input type="submit" value="Post" />
 </form>
 
 {% if alert.alertcomment_set.all|length == 0 %}
@@ -48,36 +48,36 @@
     {% recursetree comments %}
         <li {% if node.is_child_node %}style="padding-left: 2.25em"{% endif %}>
             <ul id="comment{{ node.id }}" {% if node.is_root_node %}class="comment parents"{% else %}class="comment"{% endif %}>
-            	{% if node.is_root_node %}
-            	    <div class="horizontal_rule_detail"></div>
-            	{% endif %}
-            	{{ node.message|linebreaks|urlize }}
-            	<li class="detail-byline">{{ node.posted|timesince }} ago by <a href="{% url "user_detail" pk=node.user.pk %}">{{ node.user.get_full_name }}</a></li>
-            	<li class="reply-delete">
-            		<a class="action reply-button" href="{{ alert.get_absolute_url }}#comment{{ node.id }}">link</a>
-            		<a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
+                {% if node.is_root_node %}
+                    <div class="horizontal_rule_detail"></div>
+                {% endif %}
+                {{ node.message|linebreaks|urlize }}
+                <li class="detail-byline">{{ node.posted|timesince }} ago by <a href="{% url "user_detail" pk=node.user.pk %}">{{ node.user.get_full_name }}</a></li>
+                <li class="reply-delete">
+                    <a class="action reply-button" href="{{ alert.get_absolute_url }}#comment{{ node.id }}">link</a>
+                    <a id="reply-{{ node.id }}" class="action reply-button" href="#" onclick="return false;">reply</a>
 
-            		{% comment %}
-            		{% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
-            		{% if "delete_alertcomment" in comment_perms %}
-            			<a class="action" href="{% url "delete_alert_comment" pk=node.id %}">delete</a>
-            		{% endif %}
-            		{% endcomment %}
+                    {% comment %}
+                    {% get_obj_perms user for node as "comment_perms" %} {# django-guardian #}
+                    {% if "delete_alertcomment" in comment_perms %}
+                        <a class="action" href="{% url "delete_alert_comment" pk=node.id %}">delete</a>
+                    {% endif %}
+                    {% endcomment %}
 
-            	</li>
+                </li>
             </ul>
-			<form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_alert_comment" %}" method="POST">
-				{% csrf_token %}
-				<ul class="detail-textarea">
-					{{ form.message|placeholder:"Type here to reply to the above comment." }}
-					{{ form.alert }} {# To allow for redirect #}
-				</ul>
-				{% if node.id %}    
-					<input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" /> {# Used by CommentForm to set "parent" field #}
-				{% endif %}
-				<input type="submit" value="Post" />
-				<a id="cancel-{{ node.id }}" class="action cancel-button" href="#" onclick="return false;">cancel</a>
-			</form>
+            <form id="comment-{{ node.id }}" class="comment-reply" action="{% url "create_alert_comment" %}" method="POST">
+                {% csrf_token %}
+                <ul class="detail-textarea">
+                    {{ form.message|placeholder:"Type here to reply to the above comment." }}
+                    {{ form.alert }} {# To allow for redirect #}
+                </ul>
+                {% if node.id %}    
+                    <input type="hidden" name="parent" id="parent_id" value="{{ node.id }}" /> {# Used by CommentForm to set "parent" field #}
+                {% endif %}
+                <input type="submit" value="Post" />
+                <a id="cancel-{{ node.id }}" class="action cancel-button" href="#" onclick="return false;">cancel</a>
+            </form>
             {% if not node.is_leaf_node %}
                 <ul class="children">
                     {{ children }}

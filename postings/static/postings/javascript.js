@@ -1,82 +1,82 @@
 $(document).ready(function() {
 
-	$("#menu-bar").hide();
+    $("#menu-bar").hide();
 
-	$("#menu-icon").click(function() {
-		$("#menu-bar").toggle();
-		event.stopPropagation();
-	});
+    $("#menu-icon").click(function() {
+        $("#menu-bar").toggle();
+        event.stopPropagation();
+    });
 
-	// $("#menu-icon").mouseenter(function() {
-		// $("#menu-bar").show();
-	// });
+    // $("#menu-icon").mouseenter(function() {
+        // $("#menu-bar").show();
+    // });
 
-	// $("#menu-bar").mouseleave(function() {
-		// $('#menu-bar').hide();
-	// });
+    // $("#menu-bar").mouseleave(function() {
+        // $('#menu-bar').hide();
+    // });
 
-	$('html').click(function() {
-		$('#menu-bar').hide();
-	});
+    $('html').click(function() {
+        $('#menu-bar').hide();
+    });
 
-	$(".comment-reply").hide();
+    $(".comment-reply").hide();
 
-	$(".reply-button").click(function() {
-		var button = $(this).attr("id").split("-")[1];
-		$("#comment-" + button).show();
-	});
+    $(".reply-button").click(function() {
+        var button = $(this).attr("id").split("-")[1];
+        $("#comment-" + button).show();
+    });
 
-	$(".cancel-button").click(function() {
-		var button = $(this).attr("id").split("-")[1];
-		$("#comment-" + button).hide();
-	});
+    $(".cancel-button").click(function() {
+        var button = $(this).attr("id").split("-")[1];
+        $("#comment-" + button).hide();
+    });
 
-	$(".horizontal_rule_detail:first").hide();
+    $(".horizontal_rule_detail:first").hide();
 
-	$("#varieties").hide();
+    $("#varieties").hide();
 
-	$("#filter-postings-link").click(function () {
-		$("#varieties").toggle();
-	});
+    $("#filter-postings-link").click(function () {
+        $("#varieties").toggle();
+    });
 
-	$("#community-box").click(function() {
-		if($(this).is(":checked")) { 
-			$(".feed-co").slideDown(350);
-		} else {
-			$(".feed-co").slideUp(350);
-		}
-	});
+    $("#community-box").click(function() {
+        if($(this).is(":checked")) { 
+            $(".feed-co").slideDown(350);
+        } else {
+            $(".feed-co").slideUp(350);
+        }
+    });
 
-	$("#events-box").click(function() {
-		if($(this).is(":checked")) { 
-			$(".feed-ev").slideDown(350);
-		} else {
-			$(".feed-ev").slideUp(350);
-		}
-	});
+    $("#events-box").click(function() {
+        if($(this).is(":checked")) { 
+            $(".feed-ev").slideDown(350);
+        } else {
+            $(".feed-ev").slideUp(350);
+        }
+    });
 
-	$("#government-box").click(function() {
-		if($(this).is(":checked")) { 
-			$(".feed-go").slideDown(350);
-		} else {
-			$(".feed-go").slideUp(350);
-		}
-	});
+    $("#government-box").click(function() {
+        if($(this).is(":checked")) { 
+            $(".feed-go").slideDown(350);
+        } else {
+            $(".feed-go").slideUp(350);
+        }
+    });
 
-	$("#politics-box").click(function() {
-		if($(this).is(":checked")) { 
-			$(".feed-po").slideDown(350);
-		} else {
-			$(".feed-po").slideUp(350);
-		}
-	});
+    $("#politics-box").click(function() {
+        if($(this).is(":checked")) { 
+            $(".feed-po").slideDown(350);
+        } else {
+            $(".feed-po").slideUp(350);
+        }
+    });
 
-	$("#volunteering-box").click(function() {
-		if($(this).is(":checked")) { 
-			$(".feed-vo").slideDown(350);
-		} else {
-			$(".feed-vo").slideUp(350);
-		}
-	});
+    $("#volunteering-box").click(function() {
+        if($(this).is(":checked")) { 
+            $(".feed-vo").slideDown(350);
+        } else {
+            $(".feed-vo").slideUp(350);
+        }
+    });
 
 });

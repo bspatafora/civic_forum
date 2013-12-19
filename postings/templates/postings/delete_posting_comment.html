@@ -1,0 +1,15 @@
+{% extends "postings/base.html" %}
+
+{% block content %}
+
+<h2>Delete comment?</h2>
+
+<p>{{ postingcomment.message }}</p>
+
+<form action="{% url "delete_posting_comment" pk=postingcomment.id %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Delete" />
+    <a href="{% url "posting_detail" pk=postingcomment.posting.id %}">cancel</a>
+</form>
+
+{% endblock %}

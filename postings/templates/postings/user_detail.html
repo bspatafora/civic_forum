@@ -5,56 +5,56 @@
 <h1>{{ person.get_full_name }}</h1>
 
 <ul>
-	{% for submission in object_list %}
-		<div>
-			<li class="feed-title">
-				{% if submission.content_type %}
-				    <span class="user-vote-message">{{ person.first_name }} voted to see more content like this: <br></span>
-				{% endif %}
-				<a class="civically-link" 
-				    {% if submission.title %} {# Posting/Alert #}
-				        href="{{ submission.get_absolute_url }}"
-				    {% elif submission.alert or submission.posting %} {# Comment/AlertComment #}
-				        href="{{ submission.get_absolute_url }}#comment{{ submission.pk }}"
-				    {% elif submission.content_object.title %} {# Vote on Posting #}
-				        href="{{ submission.content_object.get_absolute_url }}"
-				    {% elif submission.content_object.alert or submission.content_object.posting %} {# Vote on Comment/AlertComment #}
-				        href="{{ submission.content_object.get_absolute_url }}#comment{{ submission.content_object.pk }}"
-				    {% endif %}>
-				    {{ submission }}
-				    {% if submission.message|length > 140 %}
-				        {% if submission.alert or submission.posting %}
-				            ...
-				        {% endif %}
-				    {% endif %}
-				    {% if submission.content_object.message|length > 140 %}
-				        {% if submission.content_object.alert or submission.content_object.posting %}
-				            ...
-				        {% endif %}
-				    {% endif %}
-			    </a>
-			</li>
-			{% if submission.get_variety_display %} {# Submission is Posting #}
-				<li class="feed-variety">{{ submission.get_variety_display }}</li>
-			{% elif submission.updated %} {# Submission is Alert #}
-				<li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li>
-			{% elif submission.posting %} {# Submission is Comment #}
-				<li class="feed-variety">comment in <a href="{{ submission.get_absolute_url }}">{{ submission.posting|truncatechars:30 }}</a></li>
-			{% elif submission.alert %} {# Submission is AlertComment #}
-				<li class="feed-variety">comment in <a href="{{ submission.get_absolute_url }}">{{ submission.alert|truncatechars:30 }}</a></li>
-			{% endif %}
-			<li class="feed-byline">{{ submission.posted|timesince }} ago</li>
-		</div>
-	{% endfor %}
+    {% for submission in object_list %}
+        <div>
+            <li class="feed-title">
+                {% if submission.content_type %}
+                    <span class="user-vote-message">{{ person.first_name }} voted to see more content like this: <br></span>
+                {% endif %}
+                <a class="civically-link" 
+                    {% if submission.title %} {# Posting/Alert #}
+                        href="{{ submission.get_absolute_url }}"
+                    {% elif submission.alert or submission.posting %} {# PostingComment/AlertComment #}
+                        href="{{ submission.get_absolute_url }}#comment{{ submission.pk }}"
+                    {% elif submission.content_object.title %} {# Vote on Posting #}
+                        href="{{ submission.content_object.get_absolute_url }}"
+                    {% elif submission.content_object.alert or submission.content_object.posting %} {# Vote on PostingComment/AlertComment #}
+                        href="{{ submission.content_object.get_absolute_url }}#comment{{ submission.content_object.pk }}"
+                    {% endif %}>
+                    {{ submission }}
+                    {% if submission.message|length > 140 %}
+                        {% if submission.alert or submission.posting %}
+                            ...
+                        {% endif %}
+                    {% endif %}
+                    {% if submission.content_object.message|length > 140 %}
+                        {% if submission.content_object.alert or submission.content_object.posting %}
+                            ...
+                        {% endif %}
+                    {% endif %}
+                </a>
+            </li>
+            {% if submission.get_variety_display %} {# Submission is Posting #}
+                <li class="feed-variety">{{ submission.get_variety_display }}</li>
+            {% elif submission.updated %} {# Submission is Alert #}
+                <li class="feed-alert"><a class="alert-link" href="{% url "alerts" %}">alert</a></li>
+            {% elif submission.posting %} {# Submission is PostingComment #}
+                <li class="feed-variety">comment in <a href="{{ submission.get_absolute_url }}">{{ submission.posting|truncatechars:30 }}</a></li>
+            {% elif submission.alert %} {# Submission is AlertComment #}
+                <li class="feed-variety">comment in <a href="{{ submission.get_absolute_url }}">{{ submission.alert|truncatechars:30 }}</a></li>
+            {% endif %}
+            <li class="feed-byline">{{ submission.posted|timesince }} ago</li>
+        </div>
+    {% endfor %}
 </ul>
 
 <div class="pagination">
-	{% if page_obj.has_previous %}
-		<a id="previous" href="?page={{ page_obj.previous_page_number }}">&larr; previous</a>
-	{% endif %}
-	{% if page_obj.has_next %}
-		<a id="next" href="?page={{ page_obj.next_page_number }}">next &rarr;</a>
-	{% endif %}
+    {% if page_obj.has_previous %}
+        <a id="previous" href="?page={{ page_obj.previous_page_number }}">&larr; previous</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+        <a id="next" href="?page={{ page_obj.next_page_number }}">next &rarr;</a>
+    {% endif %}
 </div>
 
 {% endblock %}

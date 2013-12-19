@@ -1,23 +1,31 @@
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, FormView
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required, permission_required
-from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
+from datetime import datetime, timedelta
 from itertools import chain
 from operator import attrgetter
-from datetime import datetime, timedelta
 import random
+
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.utils.decorators import method_decorator
+from django.views.generic import (
+    CreateView, DeleteView, DetailView, FormView, ListView, UpdateView)
 
 from guardian.decorators import permission_required_or_403
 
-from postings.models import Alert, Posting, Vote, AlertComment, Comment, AlertForm, PostingForm, VoteForm, AlertCommentForm, CommentForm, Digest, PreferencesForm
+from .forms import (
+    AlertCommentForm, AlertForm, PostingCommentForm,
+    PostingForm, PreferencesForm, VoteForm
+)
+from .models import Alert, AlertComment, Digest, Posting, PostingComment, Vote
 
 
 class LoginRequiredMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super(LoginRequiredMixin, self).dispatch(
+            request, *args, **kwargs
+        )
 
 
 class Feed(LoginRequiredMixin, ListView):
@@ -26,11 +34,13 @@ class Feed(LoginRequiredMixin, ListView):
     paginate_by = 25
 
     def get_queryset(self):
-        return sorted(Posting.objects.all(), key=attrgetter('sort_value'), reverse=True)
+        return sorted(
+            Posting.objects.all(), key=attrgetter('sort_value'), reverse=True
+        )
 
     def get_context_data(self, **kwargs):
         context = super(Feed, self).get_context_data(**kwargs)
-        context['alerts'] = Alert.objects.all()[:3] # Add 3 most recent alerts
+        context['alerts'] = Alert.objects.all()[:3]  # Add 3 most recent alerts
         return context
 
 
@@ -68,6 +78,7 @@ class Events(LoginRequiredMixin, ListView):
         context['variety'] = "Events"
         return context
 
+
 class LocalGovernment(LoginRequiredMixin, ListView):
 
     template_name = 'postings/variety.html'
@@ -80,6 +91,7 @@ class LocalGovernment(LoginRequiredMixin, ListView):
         context = super(LocalGovernment, self).get_context_data(**kwargs)
         context['variety'] = "Local Government"
         return context
+
 
 class PoliticalDiscussion(LoginRequiredMixin, ListView):
 
@@ -94,6 +106,7 @@ class PoliticalDiscussion(LoginRequiredMixin, ListView):
         context['variety'] = "Political Discussion"
         return context
 
+
 class Volunteering(LoginRequiredMixin, ListView):
 
     template_name = 'postings/variety.html'
@@ -106,6 +119,7 @@ class Volunteering(LoginRequiredMixin, ListView):
         context = super(Volunteering, self).get_context_data(**kwargs)
         context['variety'] = "Volunteering"
         return context
+
 
 class CreateAlert(LoginRequiredMixin, CreateView):
 
@@ -120,7 +134,7 @@ class CreateAlert(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.user = self.request.user # Set "user" field
+        instance.user = self.request.user
         instance.save()
         return HttpResponseRedirect(reverse('alert_detail', kwargs={'pk': instance.id}))
 
@@ -142,7 +156,7 @@ class CreatePosting(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.user = self.request.user # Set "user" field
+        instance.user = self.request.user
         instance.save()
         return HttpResponseRedirect(reverse('posting_detail', kwargs={'pk': instance.id}))
 
@@ -153,12 +167,12 @@ class AlertDetail(LoginRequiredMixin, DetailView):
     template_name = 'postings/alert_detail.html'
 
     def get(self, request, *args, **kwargs):
-        AlertComment.objects.rebuild() # Change this to partial rebuild!
+        AlertComment.objects.rebuild()  # Change this to partial rebuild!
         return super(AlertDetail, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(AlertDetail, self).get_context_data(**kwargs)
-        context['form'] = AlertCommentForm(initial={'alert': self.object}) # Set "alert" field
+        context['form'] = AlertCommentForm(initial={'alert': self.object})
         return context
 
 
@@ -168,15 +182,14 @@ class PostingDetail(LoginRequiredMixin, DetailView):
     template_name = 'postings/posting_detail.html'
 
     def get(self, request, *args, **kwargs):
-        Comment.objects.rebuild() # Change this to partial rebuild!
+        PostingComment.objects.rebuild()  # Change this to partial rebuild!
         return super(PostingDetail, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(PostingDetail, self).get_context_data(**kwargs)
-        context['form'] = CommentForm(initial={'posting': self.object}) # Set "posting" field
+        context['form'] = PostingCommentForm(initial={'posting': self.object})
         return context
 
-    # Allow user to view posting only if they have already cast a vote on some random, recent item
     @method_decorator(permission_required_or_403('postings.view_posting', (Posting, 'pk', 'pk')))
     def dispatch(self, request, *args, **kwargs):
         return super(PostingDetail, self).dispatch(request, *args, **kwargs)
@@ -191,9 +204,9 @@ class UserDetail(LoginRequiredMixin, ListView):
         alerts = Alert.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
         postings = Posting.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
         alert_comments = AlertComment.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
-        comments = Comment.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
+        posting_comments = PostingComment.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
         votes = Vote.objects.filter(user=User.objects.get(pk=self.kwargs['pk']))
-        return sorted(chain(alerts, postings, alert_comments, comments, votes), key=attrgetter('posted'), reverse=True)
+        return sorted(chain(alerts, postings, alert_comments, posting_comments, votes), key=attrgetter('posted'), reverse=True)
 
     def get_context_data(self, **kwargs):
         context = super(UserDetail, self).get_context_data(**kwargs)
@@ -207,12 +220,12 @@ class CastVote(LoginRequiredMixin, CreateView):
     template_name = 'postings/vote.html'
 
     def get(self, request, *args, **kwargs):
-        # Select a random item from all postings, alert_comments, and comments posted in last 3 weeks
-        start_date = datetime.today() - timedelta(days=50) # If selection "stops working" again, change this, idiot
+        # Select a random item from all postings, alert_comments, and posting_comments posted in last 3 weeks
+        start_date = datetime.today() - timedelta(days=50)  # If selection "stops working" again, change this, idiot
         postings = Posting.objects.filter(posted__gte=start_date)
         alert_comments = AlertComment.objects.filter(posted__gte=start_date)
-        comments = Comment.objects.filter(posted__gte=start_date)
-        collection = list(chain(postings, alert_comments, comments))
+        posting_comments = PostingComment.objects.filter(posted__gte=start_date)
+        collection = list(chain(postings, alert_comments, posting_comments))
         random_index = random.randint(0, len(collection) - 1)
         self.random_item = collection[random_index]
         return super(CastVote, self).get(request, *args, **kwargs)
@@ -223,8 +236,8 @@ class CastVote(LoginRequiredMixin, CreateView):
             self.random_item = Posting.objects.get(pk=self.kwargs['item_pk'])
         elif self.kwargs['item_type'] == 'AlertComment':
             self.random_item = AlertComment.objects.get(pk=self.kwargs['item_pk'])
-        elif self.kwargs['item_type'] == 'Comment':
-            self.random_item = Comment.objects.get(pk=self.kwargs['item_pk'])
+        elif self.kwargs['item_type'] == 'PostingComment':
+            self.random_item = PostingComment.objects.get(pk=self.kwargs['item_pk'])
         return super(CastVote, self).post(request, *args, **kwargs)
 
     def form_valid(self, form, **kwargs):
@@ -239,7 +252,7 @@ class CastVote(LoginRequiredMixin, CreateView):
             self.random_item.points += 1
             self.random_item.save()
 
-        return HttpResponseRedirect(reverse('posting_detail', kwargs={'pk': self.kwargs['posting_pk']})) # Redirect to posting user was trying to view
+        return HttpResponseRedirect(reverse('posting_detail', kwargs={'pk': self.kwargs['posting_pk']}))  # Redirect to posting user was trying to view
 
     def get_context_data(self, **kwargs):
         context = super(CastVote, self).get_context_data(**kwargs)
@@ -296,22 +309,22 @@ class CreateAlertComment(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.user = self.request.user # Set "user" field
+        instance.user = self.request.user
         instance.save()
         alert = reverse('alert_detail', kwargs={'pk': instance.alert.id})
         link = alert + "#comment" + str(instance.pk)
         return HttpResponseRedirect(link)
 
 
-class CreateComment(LoginRequiredMixin, CreateView):
+class CreatePostingComment(LoginRequiredMixin, CreateView):
 
-    model = Comment
-    form_class = CommentForm
-    template_name = 'postings/create_comment.html'
+    model = PostingComment
+    form_class = PostingCommentForm
+    template_name = 'postings/create_posting_comment.html'
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        instance.user = self.request.user # Set "user" field
+        instance.user = self.request.user
         instance.save()
         posting = reverse('posting_detail', kwargs={'pk': instance.posting.id})
         link = posting + "#comment" + str(instance.pk)
@@ -331,17 +344,17 @@ class DeleteAlertComment(LoginRequiredMixin, DeleteView):
         return super(DeleteAlertComment, self).dispatch(request, *args, **kwargs)
 
 
-class DeleteComment(LoginRequiredMixin, DeleteView):
+class DeletePostingComment(LoginRequiredMixin, DeleteView):
 
-    model = Comment
-    template_name = 'postings/delete_comment.html'
+    model = PostingComment
+    template_name = 'postings/delete_posting_comment.html'
 
     def get_success_url(self):
         return reverse('posting_detail', kwargs={'pk': self.object.posting.id})
 
-    @method_decorator(permission_required_or_403('postings.delete_comment', (Comment, 'pk', 'pk')))
+    @method_decorator(permission_required_or_403('postings.delete_posting_comment', (PostingComment, 'pk', 'pk')))
     def dispatch(self, request, *args, **kwargs):
-        return super(DeleteComment, self).dispatch(request, *args, **kwargs)
+        return super(DeletePostingComment, self).dispatch(request, *args, **kwargs)
 
 
 class Preferences(LoginRequiredMixin, FormView):

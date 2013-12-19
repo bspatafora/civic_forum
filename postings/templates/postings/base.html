@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>{% block title %}civically{% endblock %}</title>
-	<meta charset="utf-8">
-	{% load staticfiles %}
-	<link rel="stylesheet" href="{% static 'postings/style.css' %}">
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic">
+    <title>{% block title %}civically{% endblock %}</title>
+    <meta charset="utf-8">
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'postings/style.css' %}">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic">
 </head>
 <body>
-	<div id="top-bar">
-		<a id="civically" class="civically-link" href="{% url "feed" %}">civically</a>
-		{% if user.is_authenticated %}
-			<span id="menu-icon" unselectable="on" href="#" onclick="return false;">-&thinsp;menu&thinsp;-</span>
-		{% endif %}
-	</div>
-	{% if user.is_authenticated %}
-		<div id="menu-bar">
-			<a class="menu-item" href="{% url "user_detail" pk=user.pk %}"><span class="bold">{{ user.get_full_name }}</span></a>
-			<a class="menu-item" href="{% url "create_posting" %}">create posting</a>
-			{% if perms.postings.add_alert %}
-				<a class="menu-item" href="{% url "create_alert" %}">create alert</a>
-			{% endif %}
-			<a class="menu-item" href="{% url "logout" %}">log out</a>
-		</div>
-	{% endif %}
-	<div id="content">
-		{% block content %}{% endblock %}
-	</div>
-	<div id="footer"></div>
-	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
-	<script src="{% static 'postings/javascript.js' %}"></script>
+    <div id="top-bar">
+        <a id="civically" class="civically-link" href="{% url "feed" %}">civically</a>
+        {% if user.is_authenticated %}
+            <span id="menu-icon" unselectable="on" href="#" onclick="return false;">-&thinsp;menu&thinsp;-</span>
+        {% endif %}
+    </div>
+    {% if user.is_authenticated %}
+        <div id="menu-bar">
+            <a class="menu-item" href="{% url "user_detail" pk=user.pk %}"><span class="bold">{{ user.get_full_name }}</span></a>
+            <a class="menu-item" href="{% url "create_posting" %}">create posting</a>
+            {% if perms.postings.add_alert %}
+                <a class="menu-item" href="{% url "create_alert" %}">create alert</a>
+            {% endif %}
+            <a class="menu-item" href="{% url "preferences" %}">preferences</a>
+            <a class="menu-item" href="{% url "logout" %}">log out</a>
+        </div>
+    {% endif %}
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    <div id="footer"></div>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+    <script src="{% static 'postings/javascript.js' %}"></script>
 </body>
 </html>
