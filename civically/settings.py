@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'south',
     'mptt',
     'guardian',
+    'profiles',
     'postings',
 )
 
@@ -154,6 +155,8 @@ LOGGING = {
         },
     }
 }
+
+AUTH_USER_MODEL = "profiles.CivicallyUser"
 
 LOGIN_REDIRECT_URL = 'feed'
 

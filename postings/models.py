@@ -184,8 +184,3 @@ class PostingComment(Comment):
         super(PostingComment, self).save(*args, **kwargs)
         assign_perm('postings.delete_postingcomment', self.user, self)
         return
-
-
-class Digest(models.Model):
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)

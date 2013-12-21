@@ -4,20 +4,18 @@ from operator import attrgetter
 import random
 
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
-from django.views.generic import (
-    CreateView, DeleteView, DetailView, FormView, ListView, UpdateView)
+from django.views.generic import (CreateView, DeleteView, DetailView,
+                                  FormView, ListView, UpdateView)
 
 from guardian.decorators import permission_required_or_403
 
-from .forms import (
-    AlertCommentForm, AlertForm, PostingCommentForm,
-    PostingForm, PreferencesForm, VoteForm
-)
-from .models import Alert, AlertComment, Digest, Posting, PostingComment, Vote
+from .forms import (AlertCommentForm, AlertForm, PostingCommentForm,
+                    PostingForm, PreferencesForm, VoteForm)
+from .models import Alert, AlertComment, Posting, PostingComment, Vote
 
 
 class LoginRequiredMixin(object):
@@ -230,19 +228,19 @@ class UserDetail(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         alerts = Alert.objects.filter(
-            user=User.objects.get(pk=self.kwargs['pk'])
+            user=get_user_model().objects.get(pk=self.kwargs['pk'])
         )
         postings = Posting.objects.filter(
-            user=User.objects.get(pk=self.kwargs['pk'])
+            user=get_user_model().objects.get(pk=self.kwargs['pk'])
         )
         alert_comments = AlertComment.objects.filter(
-            user=User.objects.get(pk=self.kwargs['pk'])
+            user=get_user_model().objects.get(pk=self.kwargs['pk'])
         )
         posting_comments = PostingComment.objects.filter(
-            user=User.objects.get(pk=self.kwargs['pk'])
+            user=get_user_model().objects.get(pk=self.kwargs['pk'])
         )
         votes = Vote.objects.filter(
-            user=User.objects.get(pk=self.kwargs['pk'])
+            user=get_user_model().objects.get(pk=self.kwargs['pk'])
         )
         return sorted(
             chain(alerts, postings, alert_comments, posting_comments, votes),
@@ -252,7 +250,7 @@ class UserDetail(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDetail, self).get_context_data(**kwargs)
-        context['person'] = User.objects.get(pk=self.kwargs['pk'])
+        context['person'] = get_user_model().objects.get(pk=self.kwargs['pk'])
         return context
 
 
@@ -428,7 +426,7 @@ class Preferences(LoginRequiredMixin, FormView):
     form_class = PreferencesForm
 
     def get_initial(self):
-        if Digest.objects.filter(user=self.request.user).exists():
+        if self.request.user.digest_preference == 'ys':
             initial = {'digest': 'ys'}
         else:
             initial = {'digest': 'no'}
@@ -436,13 +434,15 @@ class Preferences(LoginRequiredMixin, FormView):
         return initial
 
     def form_valid(self, form):
-        if Digest.objects.filter(user=self.request.user).exists():
+        u = self.request.user
+        if u.digest_preference == 'ys':
             if form.cleaned_data['digest'] == 'no':
-                Digest.objects.get(user=self.request.user).delete()
+                u.digest_preference = 'no'
+                u.save()
         else:
             if form.cleaned_data['digest'] == 'ys':
-                d = Digest(user=self.request.user)
-                d.save()
+                u.digest_preference = 'ys'
+                u.save()
         return super(Preferences, self).form_valid(form)
 
     def get_success_url(self):
@@ -455,7 +455,7 @@ class PreferencesSaved(LoginRequiredMixin, FormView):
     form_class = PreferencesForm
 
     def get_initial(self):
-        if Digest.objects.filter(user=self.request.user).exists():
+        if self.request.user.digest_preference == 'ys':
             initial = {'digest': 'ys'}
         else:
             initial = {'digest': 'no'}
@@ -463,13 +463,15 @@ class PreferencesSaved(LoginRequiredMixin, FormView):
         return initial
 
     def form_valid(self, form):
-        if Digest.objects.filter(user=self.request.user).exists():
+        u = self.request.user
+        if u.digest_preference == 'ys':
             if form.cleaned_data['digest'] == 'no':
-                Digest.objects.get(user=self.request.user).delete()
+                u.digest_preference = 'no'
+                u.save()
         else:
             if form.cleaned_data['digest'] == 'ys':
-                d = Digest(user=self.request.user)
-                d.save()
+                u.digest_preference = 'ys'
+                u.save()
         return super(Preferences, self).form_valid(form)
 
     def get_success_url(self):

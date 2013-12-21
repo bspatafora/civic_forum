@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
 from operator import attrgetter
 
+from django.contrib.auth import get_user_model
 from django.core.mail import EmailMultiAlternatives, get_connection
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 
-from ...models import Alert, Digest, Posting, User
+from ...models import Alert, Posting
 
 
 class Command(BaseCommand):
@@ -14,7 +15,7 @@ class Command(BaseCommand):
 
         subject = 'Recently in the community'
         sender = 'civically.digest@gmail.com'
-        recipients = Digest.objects.all()
+        recipients = get_user_model().objects.filter(digest_preference='ys')
 
         connection = get_connection()
         connection.open()
@@ -36,12 +37,12 @@ class Command(BaseCommand):
             html_content = render_to_string('digest.html', {
                 'alerts': alert_list,
                 'postings': posting_list,
-                'user': recipient.user
+                'user': recipient
             })
 
             msg = EmailMultiAlternatives(
                 subject, text_content, sender,
-                [recipient.user.email], connection=connection
+                [recipient.email], connection=connection
             )
             msg.attach_alternative(html_content, 'text/html')
             msg.send()

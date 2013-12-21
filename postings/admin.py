@@ -3,7 +3,7 @@ from django.forms import HiddenInput, ModelForm, Textarea
 
 from mptt.admin import MPTTAdminForm
 
-from .models import Alert, AlertComment, PostingComment, Digest, Posting, Vote
+from .models import Alert, AlertComment, PostingComment, Posting, Vote
 
 
 # Alert/AlertComment admin
@@ -101,11 +101,3 @@ class VoteAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Vote, VoteAdmin)
-
-
-# Digest admin
-class DigestAdmin(admin.ModelAdmin):
-    list_display = ('user',)
-
-
-admin.site.register(Digest, DigestAdmin)
