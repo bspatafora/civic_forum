@@ -23,13 +23,13 @@ ol, ul {
 /* --- */
 
 .login-form {
-	width: 19.5em;
+	width: 21.75em;
 	margin: 0 auto;
 }
 
 #id_username, #id_password {
 	height: 1.5em;
-	width: 15em;
+	width: 17em;
 	box-sizing: content-box;
 	-moz-box-sizing: content-box;
     -webkit-box-sizing: content-box;

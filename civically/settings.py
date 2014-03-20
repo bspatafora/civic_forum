@@ -1,5 +1,10 @@
 # Django settings for civically project.
 
+import os
+CIVICALLY_POSTGRES_PASSWORD = os.environ["CIVICALLY_POSTGRES_PASSWORD"]
+CIVICALLY_SECRET_KEY = os.environ["CIVICALLY_SECRET_KEY"]
+CIVICALLY_EMAIL_PASSWORD = os.environ["CIVICALLY_EMAIL_PASSWORD"]
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -14,7 +19,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'civically',
         'USER': 'ben',
-        'PASSWORD': ***REMOVED***,
+        'PASSWORD': CIVICALLY_POSTGRES_PASSWORD,
         'HOST': '',
         'PORT': '',
     }
@@ -82,7 +87,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = ***REMOVED***
+SECRET_KEY = CIVICALLY_SECRET_KEY
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -173,4 +178,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'civically.digest@gmail.com'
-EMAIL_HOST_PASSWORD = ***REMOVED***
+EMAIL_HOST_PASSWORD = CIVICALLY_EMAIL_PASSWORD

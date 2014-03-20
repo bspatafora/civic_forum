@@ -263,11 +263,20 @@ class CastVote(LoginRequiredMixin, CreateView):
         # Random posting, alert_comment, or posting_comment from last 3 weeks
         start_date = datetime.today() - timedelta(days=50)
         postings = Posting.objects.filter(
-            posted__gte=start_date)
+            posted__gte=start_date
+        ).exclude(
+            user=self.request.user
+        )
         alert_comments = AlertComment.objects.filter(
-            posted__gte=start_date)
+            posted__gte=start_date
+        ).exclude(
+            user=self.request.user
+        )
         posting_comments = PostingComment.objects.filter(
-            posted__gte=start_date)
+            posted__gte=start_date
+        ).exclude(
+            user=self.request.user
+        )
         collection = list(chain(postings, alert_comments, posting_comments))
         random_index = random.randint(0, len(collection) - 1)
         self.random_item = collection[random_index]

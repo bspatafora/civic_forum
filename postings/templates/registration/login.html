@@ -4,20 +4,20 @@
 {% load placeholder %}
 
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<p class="errorlist">Your email address and password didn't match. Please try again.</p>
 {% endif %}
 
 <form class="login-form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
     {% csrf_token %}
 
     <ul>
-        <li>{{ form.username|placeholder:"Username" }}</li>
+        <li>{{ form.username|placeholder:"Email address" }}</li>
     </ul>
     <ul>
         <li>{{ form.password|placeholder:"Password" }}</li>
     </ul>
 
-    <input type="submit" value="login" />
+    <input type="submit" value="log in" />
     <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
